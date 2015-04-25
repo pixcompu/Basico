@@ -16,6 +16,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -178,7 +179,9 @@ public class Ctrl_Principal implements ActionListener {
         Algoritmos algoritmos = new Algoritmos(this.terreno);
         switch (indice) {
             case 0:
-                
+                Stack res = algoritmos.DFS();
+                System.out.println("camino DFS");
+                while(!res.isEmpty())System.out.println(res.pop());          ;
                 break;
             case 1:
                 
@@ -245,7 +248,8 @@ public class Ctrl_Principal implements ActionListener {
         switch (selectedIndex) {
             case 0:
                 tablero[fila][columna].setBackground(Color.BLACK);
-                this.terreno.getGrafo()[fila][columna].setCosto(0);
+                this.terreno.getGrafo()[fila][columna].setCosto(0.0);
+                this.terreno.getGrafo()[fila][columna].setObstaculo(true);
                 break;
             case 1:
                 tablero[fila][columna].setBackground(Color.GRAY.darker());

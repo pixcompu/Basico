@@ -31,9 +31,7 @@ public class Cola {
     }
 
     public void enqueue(Object a) {
-       if(a!=null){
-            this.list.addLast(a);
-       }
+        this.list.addLast(a);
     }
 
     public Object dequeue() {
@@ -55,8 +53,8 @@ public class Cola {
     public Object peek() {
         return this.list.peekFirst();
     }
-    
-    public boolean estaVacia(){
+
+    public boolean estaVacia() {
         return this.list.isEmpty();
     }
 }

@@ -15,6 +15,7 @@ public class Nodos {
     private int columna;
     private double costo;
     private boolean obstaculo;
+    private boolean recorrido;
     private Cola vecinos;
     private Nodos anterior;
 
@@ -23,10 +24,19 @@ public class Nodos {
         this.columna = columna;
         this.costo = costo;
         this.obstaculo = false;
+        this.recorrido = false;
         this.vecinos = null;
         this.anterior = null;
     }
 
+    public boolean isRecorrido() {
+        return recorrido;
+    }
+
+    public void setRecorrido(boolean recorrido) {
+        this.recorrido = recorrido;
+    }
+    
     public boolean isObstaculo() {
         return obstaculo;
     }

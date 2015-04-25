@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  *
@@ -13,15 +14,16 @@ import java.util.LinkedList;
  */
 public class Algoritmos {
 
-
     private LinkedList visitados;
     private Cola frontera;
     private Terreno terreno;
+    private boolean finalEncontrado;
 
     public Algoritmos(Terreno terreno) {
         this.terreno = terreno;
         this.visitados = new LinkedList();
         this.frontera = new Cola();
+        this.finalEncontrado = false;
     }
 
     private void imprimirMatriz(Nodos[][] mat) {
@@ -37,12 +39,31 @@ public class Algoritmos {
         return null;
     }
 
-    public int[][] DFS() {
+    public Stack DFS() {
+        Nodos actual = null;
+        Nodos vecinoActual = null;
         frontera.enqueue(terreno.getInicio());
-        while (!frontera.estaVacia()) {
-
+        while (!frontera.estaVacia() && !this.finalEncontrado) {
+            actual = ((Nodos) frontera.dequeue());
+            actual.setRecorrido(true);
+            terreno.establecerVecinos4Direeciones(actual);
+            for (int i = 0; i < actual.getVecinos().dimensionCola() && !this.finalEncontrado; i++) {
+                vecinoActual = (Nodos) actual.getVecinos().get(i);
+                if (vecinoActual.equals(terreno.getFin())) {
+                    this.finalEncontrado = true;
+                } else {
+                    frontera.enqueue(actual.getVecinos().get(i));
+                }
+            }
         }
-        return null;
+        Stack res = new Stack();
+        Nodos reco = vecinoActual;
+        while (reco != null) {
+            res.push(reco);
+            reco = reco.getAnterior();
+        }
+        System.out.println(res.size());
+        return res;
     }
 
     public int[][] classic() {
