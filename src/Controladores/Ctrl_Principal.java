@@ -29,6 +29,15 @@ public class Ctrl_Principal implements ActionListener {
     private JButton inicio;
     private JButton fin;
 
+    /**
+     * Recibe la ventana y hace las configuraciones necesarias antes de
+     * mostrarla establece el Layout del panel de la ventana, es Grid porque es
+     * el mejor para tablas segun internet establece tamaño de tablero de
+     * botones establece tamaño de matriz de enteros que sera la que manejaremos
+     * en los algoritmos inicializa un inicio y un fin
+     *
+     * @param ventana
+     */
     public Ctrl_Principal(Principal ventana) {
         this.ventana = ventana;
         this.cuadricula = ventana.pnl_Cuadricula;
@@ -40,6 +49,12 @@ public class Ctrl_Principal implements ActionListener {
         iniciar();
     }
 
+    /**
+     * Configura cada boton del tablero le agrega texto le agrega informacion de
+     * la posicion en forma de actioncommand le pone un color de fondo inicia
+     * las cuadriculas del tablero de algoritmos en 0 añade al panel el boton
+     * recien creado
+     */
     private void iniciaTablero() {
 
         for (int i = 0; i < tablero.length; i++) {
@@ -55,6 +70,17 @@ public class Ctrl_Principal implements ActionListener {
         }
     }
 
+    /**
+     * Metodo para atender las peticiones de la ventana Java lo pide poner al
+     * implementar ActionComand Caso iniciar: verifica que se haya puesto un
+     * inicio y un final, si es asi inicia el algoritmo seleccionado Caso Reset:
+     * resetea todas las opciones a su valor inicial Caso Default: verifica si
+     * esta seleccionado inicio asigna inicio si esta seleccionado final asigna
+     * el final cualquier otro caso asigna obstaculo, con la dificultad
+     * seleccionada
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -82,6 +108,16 @@ public class Ctrl_Principal implements ActionListener {
         }
     }
 
+    /**
+     * Configuracion Inicial la primera linea para que salga la ventana en el
+     * centro la segunda le da un titulo la tercera, cuarta y quinta enlaza los
+     * botones de inicio, fin y obstaculo para que no se puedan seleccionar
+     * simultaneamente inicia el selector en inicio añade el boton de realizar y
+     * limpiar un listener, para que cuando se clicke entre al metodo
+     * actionPerformed de arriba realiza la inicializacion de cada boton la
+     * siguiente pack hace que el tamaño de la ventana se ajuste para poder ver
+     * todos los botones la siguiente lanza la ventana en pantalla
+     */
     private void iniciar() {
         this.ventana.setLocationRelativeTo(null);
         this.ventana.setTitle("Ordinario");
@@ -96,6 +132,9 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.setVisible(true);
     }
 
+    /**
+     * Establece los valores iniciales de los botones
+     */
     private void reset() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
@@ -111,12 +150,23 @@ public class Ctrl_Principal implements ActionListener {
         this.fin = null;
     }
 
+    /**
+     * Nos dice si el valor de inicio y final existen
+     *
+     * @return
+     */
     private boolean estaConfigurado() {
         return ((this.inicio != null) && (this.fin != null));
     }
 
+    /**
+     * Inicia algoritmo Basado en la seleccion de la lista de algoritmos,
+     * realiza uno y lo muestra en pantalla
+     *
+     * @param indice
+     */
     private void iniciarAlgoritmo(int indice) {
-        Algoritmos algoritmos = new Algoritmos(this.inicio.getActionCommand(),this.fin.getActionCommand(),this.tableroAlgoritmo);
+        Algoritmos algoritmos = new Algoritmos(this.inicio.getActionCommand(), this.fin.getActionCommand(), this.tableroAlgoritmo);
         switch (indice) {
             case 0:
                 this.tableroResuesta = algoritmos.classic();
@@ -133,6 +183,15 @@ public class Ctrl_Principal implements ActionListener {
         mostrarSolucion();
     }
 
+    /**
+     * Marca inicio primero obtiene la informacion de actioncomand que dice la
+     * posicion cambia el color a verde desactiva el selector de inicio la
+     * bolita, para que ya no se pueda usar selecciona por defecto el boton
+     * bolita de obstaculo establece el valor de inicio como ese boton marca el
+     * tablero de enteros con 1
+     *
+     * @param actionCommand
+     */
     private void marcarInicio(String actionCommand) {
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
@@ -144,6 +203,15 @@ public class Ctrl_Principal implements ActionListener {
         this.tableroAlgoritmo[fila][columna] = 1;
     }
 
+    /**
+     * Marca Final primero obtiene la informacion de actioncomand que dice la
+     * posicion cambia el color a rojo desactiva el selector de fin la bolita,
+     * para que ya no se pueda usar selecciona por defecto el boton bolita de
+     * obstaculo establece el valor de fin como ese boton marca el tablero de
+     * enteros con 2
+     *
+     * @param actionCommand
+     */
     private void marcarFin(String actionCommand) {
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
@@ -155,33 +223,38 @@ public class Ctrl_Principal implements ActionListener {
         this.tableroAlgoritmo[fila][columna] = 2;
     }
 
+    /**
+     * Marca Obstaculo primero obtiene la informacion de actioncomand que dice
+     * la posicion cambia el color al correspondiente y la matriz de enteros a
+     * un valor identificable 3 - IMPOSIBLE 4 - VERY TOUGH 5 - TOUGH 6 - NORMAL
+     * 7 - EASY
+     *
+     * @param actionCommand
+     * @param selectedIndex
+     */
     private void marcarObstaculo(String actionCommand, int selectedIndex) {
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
+        tablero[fila][columna].setEnabled(false);
         switch (selectedIndex) {
             case 0:
                 tablero[fila][columna].setBackground(Color.BLACK);
-                tablero[fila][columna].setEnabled(false);
                 this.tableroAlgoritmo[fila][columna] = 3;
                 break;
             case 1:
                 tablero[fila][columna].setBackground(Color.GRAY.darker());
-                tablero[fila][columna].setEnabled(false);
                 this.tableroAlgoritmo[fila][columna] = 4;
                 break;
             case 2:
                 tablero[fila][columna].setBackground(Color.GRAY.brighter());
-                tablero[fila][columna].setEnabled(false);
                 this.tableroAlgoritmo[fila][columna] = 5;
                 break;
             case 3:
                 tablero[fila][columna].setBackground(Color.ORANGE);
-                tablero[fila][columna].setEnabled(false);
                 this.tableroAlgoritmo[fila][columna] = 6;
                 break;
             case 4:
                 tablero[fila][columna].setBackground(Color.YELLOW);
-                tablero[fila][columna].setEnabled(false);
                 this.tableroAlgoritmo[fila][columna] = 7;
                 break;
             default:
@@ -189,13 +262,16 @@ public class Ctrl_Principal implements ActionListener {
         }
     }
 
+    /**
+     * Cambiara los botones de la ventana
+     */
     private void mostrarSolucion() {
-        try{
+        try {
             int i = this.tableroResuesta.length;
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Aqui se mostraria la solucion");
         }
-    
+
     }
 
 }

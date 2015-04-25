@@ -14,6 +14,10 @@ import Ventanas.Principal;
  */
 public class Main {
  
+    /**
+     * Funcion principal, crea una ventana y la manda a un controlador
+     * @param args 
+     */
     public static void main(String[] args) {
         Principal ventana = new Principal();
         Ctrl_Principal controlador = new Ctrl_Principal(ventana);

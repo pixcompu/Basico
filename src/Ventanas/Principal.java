@@ -55,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Classic A*", "DeepthSearch", "Foward Checking" }));
+        list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Classic A*", "Deepth Search", "Foward Checking" }));
 
         lbl_Metodo.setText("Método :");
 
