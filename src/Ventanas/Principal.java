@@ -59,6 +59,7 @@ public class Principal extends javax.swing.JFrame {
 
         lbl_Metodo.setText("Método :");
 
+        lbl_Titulo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         lbl_Titulo.setText("Configuracion");
 
         lista_dificultad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Imposible", "Very Tough", "Tough", "Normal", "Easy" }));
@@ -114,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lbl_Metodo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(radio_inicio)
                 .addGap(18, 18, 18)
                 .addComponent(radio_fin)

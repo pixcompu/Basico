@@ -114,7 +114,7 @@
                   <Component id="lbl_Metodo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="list_Metodos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
                   <Component id="radio_inicio" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="radio_fin" min="-2" max="-2" attributes="0"/>
@@ -155,6 +155,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_Titulo">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Century Gothic" size="14" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Configuracion"/>
           </Properties>
         </Component>
