@@ -28,17 +28,123 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grp_Radios = new javax.swing.ButtonGroup();
+        pnl_Cuadricula = new javax.swing.JPanel();
+        pnl_Controls = new javax.swing.JPanel();
+        list_Metodos = new javax.swing.JComboBox();
+        lbl_Metodo = new javax.swing.JLabel();
+        lbl_Titulo = new javax.swing.JLabel();
+        lista_dificultad = new javax.swing.JComboBox();
+        radio_inicio = new javax.swing.JRadioButton();
+        radio_fin = new javax.swing.JRadioButton();
+        btn_realizar = new javax.swing.JButton();
+        btn_limpiar = new javax.swing.JButton();
+        lbl_Dificultad = new javax.swing.JLabel();
+        radio_obstaculo = new javax.swing.JRadioButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout pnl_CuadriculaLayout = new javax.swing.GroupLayout(pnl_Cuadricula);
+        pnl_Cuadricula.setLayout(pnl_CuadriculaLayout);
+        pnl_CuadriculaLayout.setHorizontalGroup(
+            pnl_CuadriculaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 495, Short.MAX_VALUE)
+        );
+        pnl_CuadriculaLayout.setVerticalGroup(
+            pnl_CuadriculaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 347, Short.MAX_VALUE)
+        );
+
+        list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Classic A*", "DeepthSearch", "Foward Checking" }));
+
+        lbl_Metodo.setText("Método");
+
+        lbl_Titulo.setText("Configuracion");
+
+        lista_dificultad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Imposible", "Very Tough", "Tough", "Normal", "Easy" }));
+
+        radio_inicio.setText("Poner Inicio");
+
+        radio_fin.setText("Poner Fin");
+
+        btn_realizar.setText("Iniciar");
+
+        btn_limpiar.setText("Reset");
+
+        lbl_Dificultad.setText("Dificultad :");
+
+        radio_obstaculo.setText("Poner Bloque");
+
+        javax.swing.GroupLayout pnl_ControlsLayout = new javax.swing.GroupLayout(pnl_Controls);
+        pnl_Controls.setLayout(pnl_ControlsLayout);
+        pnl_ControlsLayout.setHorizontalGroup(
+            pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ControlsLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lbl_Metodo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+            .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(lbl_Titulo))
+                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radio_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(radio_obstaculo)
+                            .addComponent(radio_inicio)
+                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_realizar)
+                                    .addComponent(btn_limpiar)))
+                            .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(lbl_Dificultad)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnl_ControlsLayout.setVerticalGroup(
+            pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Titulo)
+                .addGap(16, 16, 16)
+                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_Metodo))
+                .addGap(29, 29, 29)
+                .addComponent(radio_inicio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radio_fin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radio_obstaculo)
+                .addGap(15, 15, 15)
+                .addComponent(lbl_Dificultad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(btn_realizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_limpiar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnl_Cuadricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_Controls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(pnl_Cuadricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnl_Controls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -80,5 +186,18 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btn_limpiar;
+    public javax.swing.JButton btn_realizar;
+    public javax.swing.ButtonGroup grp_Radios;
+    private javax.swing.JLabel lbl_Dificultad;
+    private javax.swing.JLabel lbl_Metodo;
+    private javax.swing.JLabel lbl_Titulo;
+    public javax.swing.JComboBox list_Metodos;
+    public javax.swing.JComboBox lista_dificultad;
+    private javax.swing.JPanel pnl_Controls;
+    public javax.swing.JPanel pnl_Cuadricula;
+    public javax.swing.JRadioButton radio_fin;
+    public javax.swing.JRadioButton radio_inicio;
+    public javax.swing.JRadioButton radio_obstaculo;
     // End of variables declaration//GEN-END:variables
 }
