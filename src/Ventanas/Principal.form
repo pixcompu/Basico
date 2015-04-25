@@ -68,36 +68,36 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                          <Component id="lbl_Titulo" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="list_Metodos" min="-2" max="-2" attributes="0"/>
-                              <Component id="radio_fin" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
-                              <Component id="radio_inicio" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btn_realizar" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btn_limpiar" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="lista_dificultad" alignment="1" min="-2" pref="99" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="lbl_Titulo" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="list_Metodos" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radio_fin" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
+                                  <Component id="radio_inicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="btn_realizar" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btn_limpiar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="lista_dificultad" min="-2" pref="81" max="-2" attributes="0"/>
-                                  <Component id="radio_obstaculo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radio_obstaculo" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_Dificultad" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_Metodo" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lbl_Dificultad" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbl_Metodo" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -166,10 +166,10 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="5">
                 <StringItem index="0" value="Imposible"/>
-                <StringItem index="1" value="Very Tough"/>
-                <StringItem index="2" value="Tough"/>
-                <StringItem index="3" value="Normal"/>
-                <StringItem index="4" value="Easy"/>
+                <StringItem index="1" value="Very Tough (10.0)"/>
+                <StringItem index="2" value="Tough (5.0)"/>
+                <StringItem index="3" value="Normal (1.0)"/>
+                <StringItem index="4" value="Easy (0.3)"/>
               </StringArray>
             </Property>
           </Properties>

@@ -8,7 +8,10 @@ package Controladores;
 import Modelo.Algoritmos;
 import Ventanas.Principal;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -20,7 +23,10 @@ import javax.swing.JPanel;
  * @author Felix Diaz ®
  */
 public class Ctrl_Principal implements ActionListener {
-
+    
+    private final Dimension tamañoBoton = new Dimension(40, 20);
+    private final Insets margen = new Insets(0,0,0,0);
+    private final Font fuenteBtn = new Font("Tahoma", 1, 9);
     private Principal ventana;
     private JPanel cuadricula;
     private final JButton[][] tablero;
@@ -59,10 +65,13 @@ public class Ctrl_Principal implements ActionListener {
 
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
-                tablero[i][j] = new JButton(" ");
+                tablero[i][j] = new JButton();
                 tablero[i][j].setActionCommand("" + i + "," + j + "");
                 tablero[i][j].setToolTipText("Posicion: (" + i + "," + j + ")");
                 tablero[i][j].setBackground(Color.WHITE);
+                tablero[i][j].setFont(fuenteBtn);
+                tablero[i][j].setMargin(margen);
+                tablero[i][j].setPreferredSize(tamañoBoton);
                 tablero[i][j].addActionListener(this);
                 tableroAlgoritmo[i][j] = 0;
                 cuadricula.add(tablero[i][j]);
@@ -119,7 +128,6 @@ public class Ctrl_Principal implements ActionListener {
      * todos los botones la siguiente lanza la ventana en pantalla
      */
     private void iniciar() {
-        this.ventana.setLocationRelativeTo(null);
         this.ventana.setTitle("Ordinario");
         this.ventana.grp_Radios.add(this.ventana.radio_fin);
         this.ventana.grp_Radios.add(this.ventana.radio_inicio);
@@ -127,8 +135,10 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_inicio.setSelected(true);
         this.ventana.btn_realizar.addActionListener(this);
         this.ventana.btn_limpiar.addActionListener(this);
+        this.ventana.setResizable(false);
         iniciaTablero();
         this.ventana.pack();
+        this.ventana.setLocationRelativeTo(null);
         this.ventana.setVisible(true);
     }
 
@@ -141,6 +151,7 @@ public class Ctrl_Principal implements ActionListener {
                 this.tablero[i][j].setEnabled(true);
                 this.tablero[i][j].setBackground(Color.WHITE);
                 this.tableroAlgoritmo[i][j] = 0;
+                this.tablero[i][j].setText("    ");
             }
         }
         this.ventana.radio_inicio.setSelected(true);
@@ -148,6 +159,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_fin.setEnabled(true);
         this.inicio = null;
         this.fin = null;
+        this.ventana.pack();
     }
 
     /**
@@ -250,12 +262,12 @@ public class Ctrl_Principal implements ActionListener {
                 this.tableroAlgoritmo[fila][columna] = 5;
                 break;
             case 3:
-                tablero[fila][columna].setBackground(Color.ORANGE);
-                this.tableroAlgoritmo[fila][columna] = 6;
+                tablero[fila][columna].setBackground(Color.WHITE);
+                this.tableroAlgoritmo[fila][columna] = 0;
                 break;
             case 4:
-                tablero[fila][columna].setBackground(Color.YELLOW);
-                this.tableroAlgoritmo[fila][columna] = 7;
+                tablero[fila][columna].setBackground(Color.ORANGE);
+                this.tableroAlgoritmo[fila][columna] = 6;
                 break;
             default:
                 throw new AssertionError();
@@ -271,7 +283,7 @@ public class Ctrl_Principal implements ActionListener {
         } catch (NullPointerException e) {
             System.out.println("Aqui se mostraria la solucion");
         }
-
+        this.ventana.pack();
     }
 
 }

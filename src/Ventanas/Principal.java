@@ -62,7 +62,7 @@ public class Principal extends javax.swing.JFrame {
         lbl_Titulo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         lbl_Titulo.setText("Configuracion");
 
-        lista_dificultad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Imposible", "Very Tough", "Tough", "Normal", "Easy" }));
+        lista_dificultad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Imposible", "Very Tough (10.0)", "Tough (5.0)", "Normal (1.0)", "Easy (0.3)" }));
 
         radio_inicio.setText("Poner Inicio");
 
@@ -81,29 +81,29 @@ public class Principal extends javax.swing.JFrame {
         pnl_ControlsLayout.setHorizontalGroup(
             pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(lbl_Titulo))
-                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(radio_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(radio_inicio)
-                            .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_realizar)
-                                    .addComponent(btn_limpiar)))
-                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(radio_obstaculo))))
-                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_Dificultad)
-                            .addComponent(lbl_Metodo))))
+                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                            .addGap(60, 60, 60)
+                            .addComponent(lbl_Titulo))
+                        .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                            .addGap(49, 49, 49)
+                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radio_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radio_inicio)
+                                .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btn_realizar)
+                                        .addComponent(btn_limpiar)))
+                                .addComponent(radio_obstaculo)))
+                        .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                            .addGap(23, 23, 23)
+                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbl_Dificultad)
+                                .addComponent(lbl_Metodo)))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         pnl_ControlsLayout.setVerticalGroup(
