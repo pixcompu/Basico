@@ -6,6 +6,8 @@
 package Controladores;
 
 import Modelo.Algoritmos;
+import Modelo.Nodos;
+import Modelo.Terreno;
 import Ventanas.Principal;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,10 +32,7 @@ public class Ctrl_Principal implements ActionListener {
     private Principal ventana;
     private JPanel cuadricula;
     private final JButton[][] tablero;
-    private final int[][] tableroAlgoritmo;
-    private int[][] tableroResuesta;
-    private JButton inicio;
-    private JButton fin;
+    private Terreno terreno;
 
     /**
      * Recibe la ventana y hace las configuraciones necesarias antes de
@@ -49,9 +48,7 @@ public class Ctrl_Principal implements ActionListener {
         this.cuadricula = ventana.pnl_Cuadricula;
         this.cuadricula.setLayout(new GridLayout(20, 20));
         this.tablero = new JButton[20][20];
-        this.tableroAlgoritmo = new int[20][20];
-        this.inicio = null;
-        this.fin = null;
+        this.terreno = new Terreno(20,20);
         iniciar();
     }
 
@@ -73,7 +70,7 @@ public class Ctrl_Principal implements ActionListener {
                 tablero[i][j].setMargin(margen);
                 tablero[i][j].setPreferredSize(tamañoBoton);
                 tablero[i][j].addActionListener(this);
-                tableroAlgoritmo[i][j] = 0;
+                terreno.getGrafo()[i][j] = new Nodos(i,j,1.0);
                 cuadricula.add(tablero[i][j]);
             }
         }
@@ -150,15 +147,15 @@ public class Ctrl_Principal implements ActionListener {
             for (int j = 0; j < tablero.length; j++) {
                 this.tablero[i][j].setEnabled(true);
                 this.tablero[i][j].setBackground(Color.WHITE);
-                this.tableroAlgoritmo[i][j] = 0;
+                this.terreno.getGrafo()[i][j].setCosto(1.0);
                 this.tablero[i][j].setText("    ");
             }
         }
         this.ventana.radio_inicio.setSelected(true);
         this.ventana.radio_inicio.setEnabled(true);
         this.ventana.radio_fin.setEnabled(true);
-        this.inicio = null;
-        this.fin = null;
+        this.terreno.setInicio(null);
+        this.terreno.setFin(null);
         this.ventana.pack();
     }
 
@@ -168,7 +165,7 @@ public class Ctrl_Principal implements ActionListener {
      * @return
      */
     private boolean estaConfigurado() {
-        return ((this.inicio != null) && (this.fin != null));
+        return ((this.terreno.getInicio() != null) && (this.terreno.getFin() != null));
     }
 
     /**
@@ -178,21 +175,20 @@ public class Ctrl_Principal implements ActionListener {
      * @param indice
      */
     private void iniciarAlgoritmo(int indice) {
-        Algoritmos algoritmos = new Algoritmos(this.inicio.getActionCommand(), this.fin.getActionCommand(), this.tableroAlgoritmo);
+        Algoritmos algoritmos = new Algoritmos(this.terreno);
         switch (indice) {
             case 0:
-                this.tableroResuesta = algoritmos.classic();
+                
                 break;
             case 1:
-                this.tableroResuesta = algoritmos.DFS();
+                
                 break;
             case 2:
-                this.tableroResuesta = algoritmos.FC();
+                
                 break;
             default:
                 throw new AssertionError();
         }
-        mostrarSolucion();
     }
 
     /**
@@ -211,8 +207,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_inicio.setEnabled(false);
         this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
-        this.inicio = tablero[fila][columna];
-        this.tableroAlgoritmo[fila][columna] = 1;
+        this.terreno.estableceInicio(fila,columna);
     }
 
     /**
@@ -231,8 +226,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_fin.setEnabled(false);
         this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
-        this.fin = tablero[fila][columna];
-        this.tableroAlgoritmo[fila][columna] = 2;
+        this.terreno.estableceFin(fila,columna);
     }
 
     /**
@@ -251,39 +245,27 @@ public class Ctrl_Principal implements ActionListener {
         switch (selectedIndex) {
             case 0:
                 tablero[fila][columna].setBackground(Color.BLACK);
-                this.tableroAlgoritmo[fila][columna] = 3;
+                this.terreno.getGrafo()[fila][columna].setCosto(0);
                 break;
             case 1:
                 tablero[fila][columna].setBackground(Color.GRAY.darker());
-                this.tableroAlgoritmo[fila][columna] = 4;
+                this.terreno.getGrafo()[fila][columna].setCosto(10.0);
                 break;
             case 2:
                 tablero[fila][columna].setBackground(Color.GRAY.brighter());
-                this.tableroAlgoritmo[fila][columna] = 5;
+                this.terreno.getGrafo()[fila][columna].setCosto(5.0);
                 break;
             case 3:
                 tablero[fila][columna].setBackground(Color.WHITE);
-                this.tableroAlgoritmo[fila][columna] = 0;
+                this.terreno.getGrafo()[fila][columna].setCosto(1.0);
                 break;
             case 4:
                 tablero[fila][columna].setBackground(Color.ORANGE);
-                this.tableroAlgoritmo[fila][columna] = 6;
+                this.terreno.getGrafo()[fila][columna].setCosto(0.3);
                 break;
             default:
                 throw new AssertionError();
         }
-    }
-
-    /**
-     * Cambiara los botones de la ventana
-     */
-    private void mostrarSolucion() {
-        try {
-            int i = this.tableroResuesta.length;
-        } catch (NullPointerException e) {
-            System.out.println("Aqui se mostraria la solucion");
-        }
-        this.ventana.pack();
     }
 
 }
