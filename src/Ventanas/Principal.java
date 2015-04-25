@@ -48,16 +48,16 @@ public class Principal extends javax.swing.JFrame {
         pnl_Cuadricula.setLayout(pnl_CuadriculaLayout);
         pnl_CuadriculaLayout.setHorizontalGroup(
             pnl_CuadriculaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 518, Short.MAX_VALUE)
         );
         pnl_CuadriculaLayout.setVerticalGroup(
             pnl_CuadriculaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Classic A*", "DeepthSearch", "Foward Checking" }));
 
-        lbl_Metodo.setText("Método");
+        lbl_Metodo.setText("Método :");
 
         lbl_Titulo.setText("Configuracion");
 
@@ -79,12 +79,6 @@ public class Principal extends javax.swing.JFrame {
         pnl_Controls.setLayout(pnl_ControlsLayout);
         pnl_ControlsLayout.setHorizontalGroup(
             pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ControlsLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lbl_Metodo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
             .addGroup(pnl_ControlsLayout.createSequentialGroup()
                 .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_ControlsLayout.createSequentialGroup()
@@ -93,43 +87,48 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(pnl_ControlsLayout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(radio_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(radio_obstaculo)
                             .addComponent(radio_inicio)
-                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
                                 .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btn_realizar)
                                     .addComponent(btn_limpiar)))
-                            .addGroup(pnl_ControlsLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(lbl_Dificultad)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radio_obstaculo))))
+                    .addGroup(pnl_ControlsLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_Dificultad)
+                            .addComponent(lbl_Metodo))))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         pnl_ControlsLayout.setVerticalGroup(
             pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_ControlsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_Titulo)
-                .addGap(16, 16, 16)
-                .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_Metodo))
-                .addGap(29, 29, 29)
+                .addGap(19, 19, 19)
+                .addComponent(lbl_Metodo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(radio_inicio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(radio_fin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(radio_obstaculo)
-                .addGap(15, 15, 15)
+                .addGap(38, 38, 38)
                 .addComponent(lbl_Dificultad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(51, 51, 51)
                 .addComponent(btn_realizar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btn_limpiar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,8 +142,8 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnl_Cuadricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pnl_Controls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnl_Cuadricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
