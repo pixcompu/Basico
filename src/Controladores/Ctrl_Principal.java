@@ -26,14 +26,17 @@ import javax.swing.JPanel;
  * @author Felix Diaz ®
  */
 public class Ctrl_Principal implements ActionListener {
-    
-    private final Dimension tamañoBoton = new Dimension(40, 20);
-    private final Insets margen = new Insets(0,0,0,0);
+
+    private final Dimension tamañoBoton = new Dimension(45, 25);
+    private final Insets margen = new Insets(0, 0, 0, 0);
     private final Font fuenteBtn = new Font("Tahoma", 1, 9);
     private Principal ventana;
     private JPanel cuadricula;
     private final JButton[][] tablero;
     private Terreno terreno;
+    private final Color marcaCamino = Color.YELLOW;
+    private boolean opcionDiagonal;
+    private boolean algoritmoIniciado;
 
     /**
      * Recibe la ventana y hace las configuraciones necesarias antes de
@@ -49,7 +52,8 @@ public class Ctrl_Principal implements ActionListener {
         this.cuadricula = ventana.pnl_Cuadricula;
         this.cuadricula.setLayout(new GridLayout(20, 20));
         this.tablero = new JButton[20][20];
-        this.terreno = new Terreno(20,20);
+        this.terreno = new Terreno(20, 20);
+        this.algoritmoIniciado = false;
         iniciar();
     }
 
@@ -71,7 +75,7 @@ public class Ctrl_Principal implements ActionListener {
                 tablero[i][j].setMargin(margen);
                 tablero[i][j].setPreferredSize(tamañoBoton);
                 tablero[i][j].addActionListener(this);
-                terreno.getGrafo()[i][j] = new Nodos(i,j,1.0);
+                terreno.getGrafo()[i][j] = new Nodos(i, j, 1.0);
                 cuadricula.add(tablero[i][j]);
             }
         }
@@ -102,6 +106,13 @@ public class Ctrl_Principal implements ActionListener {
             case "Reset":
                 reset();
                 break;
+            case "diagonal":
+                this.opcionDiagonal = this.ventana.tgl_diagonal.isSelected();
+                this.ventana.tgl_diagonal.setText((this.opcionDiagonal ? "Con " : "Sin ") + "Diagonales");
+                if (this.algoritmoIniciado) {
+                    iniciarAlgoritmo(this.ventana.list_Metodos.getSelectedIndex());
+                }
+                break;
             default:
                 if (this.ventana.radio_inicio.isSelected()) {
                     marcarInicio(e.getActionCommand());
@@ -111,6 +122,9 @@ public class Ctrl_Principal implements ActionListener {
                     } else {
                         marcarObstaculo(e.getActionCommand(), this.ventana.lista_dificultad.getSelectedIndex());
                     }
+                }
+                if (this.algoritmoIniciado) {
+                    iniciarAlgoritmo(this.ventana.list_Metodos.getSelectedIndex());
                 }
         }
     }
@@ -134,10 +148,23 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.btn_realizar.addActionListener(this);
         this.ventana.btn_limpiar.addActionListener(this);
         this.ventana.setResizable(false);
+        this.opcionDiagonal = false;
+        this.ventana.tgl_diagonal.addActionListener(this);
         iniciaTablero();
         this.ventana.pack();
         this.ventana.setLocationRelativeTo(null);
         this.ventana.setVisible(true);
+    }
+
+    private void resetValores() {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero.length; j++) {
+                this.terreno.getGrafo()[i][j].setAnterior(null);
+                this.terreno.getGrafo()[i][j].setVecinos(null);
+                this.terreno.getGrafo()[i][j].setRecorrido(false);
+                this.tablero[i][j].setText("    ");
+            }
+        }
     }
 
     /**
@@ -148,8 +175,9 @@ public class Ctrl_Principal implements ActionListener {
             for (int j = 0; j < tablero.length; j++) {
                 this.tablero[i][j].setEnabled(true);
                 this.tablero[i][j].setBackground(Color.WHITE);
-                this.terreno.getGrafo()[i][j].setCosto(1.0);
                 this.tablero[i][j].setText("    ");
+                this.terreno.getGrafo()[i][j].setCosto(1.0);
+                this.terreno.getGrafo()[i][j].setObstaculo(false);
             }
         }
         this.ventana.radio_inicio.setSelected(true);
@@ -157,6 +185,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_fin.setEnabled(true);
         this.terreno.setInicio(null);
         this.terreno.setFin(null);
+        this.algoritmoIniciado = false;
         this.ventana.pack();
     }
 
@@ -176,18 +205,23 @@ public class Ctrl_Principal implements ActionListener {
      * @param indice
      */
     private void iniciarAlgoritmo(int indice) {
-        Algoritmos algoritmos = new Algoritmos(this.terreno);
+        resetValores();
+        this.algoritmoIniciado = true;
+        Algoritmos algoritmos = new Algoritmos(this.terreno, this, this.opcionDiagonal);
         switch (indice) {
             case 0:
                 Stack res = algoritmos.DFS();
-                System.out.println("camino DFS");
-                while(!res.isEmpty())System.out.println(res.pop());          ;
+                if (res != null) {
+                    mostrarCamino(res);
+                } else {
+                    mostrarMensaje("No se encontraron caminos");
+                }
                 break;
             case 1:
-                
+
                 break;
             case 2:
-                
+
                 break;
             default:
                 throw new AssertionError();
@@ -210,7 +244,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_inicio.setEnabled(false);
         this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
-        this.terreno.estableceInicio(fila,columna);
+        this.terreno.estableceInicio(fila, columna);
     }
 
     /**
@@ -229,7 +263,7 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana.radio_fin.setEnabled(false);
         this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
-        this.terreno.estableceFin(fila,columna);
+        this.terreno.estableceFin(fila, columna);
     }
 
     /**
@@ -270,6 +304,32 @@ public class Ctrl_Principal implements ActionListener {
             default:
                 throw new AssertionError();
         }
+    }
+
+    public void actualizar(int fila, int columna, double costoTotal, Color marca, boolean marcandoCamino) {
+        if (this.terreno.getGrafo()[fila][columna].getCosto() == 1.0 || marcandoCamino) {
+            this.tablero[fila][columna].setBackground(marca);
+        }
+        this.tablero[fila][columna].setText("" + costoTotal);
+    }
+
+    private void mostrarCamino(Stack res) {
+        Nodos reco;
+        int fila, columna;
+        double costo = 0;
+        while (!res.isEmpty()) {
+            reco = ((Nodos) res.pop());
+            if (!reco.equals(terreno.getInicio()) && !reco.equals(terreno.getFin())) {
+                fila = reco.getFila();
+                columna = reco.getColumna();
+                costo += reco.getCosto();
+                actualizar(fila, columna, costo, marcaCamino, true);
+            }
+        }
+    }
+
+    private void mostrarMensaje(String msj) {
+        JOptionPane.showMessageDialog(this.ventana, msj, "Alerta", 1);
     }
 
 }

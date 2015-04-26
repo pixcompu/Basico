@@ -63,29 +63,29 @@ public class Terreno {
         this.fin = get(fila, columna);
     }
 
-    public void establecerVecinos4Direeciones(Nodos node) {
+    public void establecerVecinos4Direcciones(Nodos node) {
         Cola aux = new Cola();
         int fila = node.getFila();
         int columna = node.getColumna();
         Nodos vecino;
 
         vecino = get(fila + 1, columna);
-        if ((vecino != null) && !(vecino.isRecorrido())) {
+        if (vecinoAceptable(vecino)) {
             aux.enqueue(vecino);
             vecino.setAnterior(node);
         }
         vecino = get(fila, columna + 1);
-        if ((vecino != null) && !(vecino.isRecorrido())) {
+        if (vecinoAceptable(vecino)) {
             aux.enqueue(vecino);
             vecino.setAnterior(node);
         }
         vecino = get(fila - 1, columna);
-        if ((vecino != null) && !(vecino.isRecorrido())) {
+        if (vecinoAceptable(vecino)) {
             aux.enqueue(vecino);
             vecino.setAnterior(node);
         }
         vecino = get(fila, columna - 1);
-        if ((vecino != null) && !(vecino.isRecorrido())) {
+        if (vecinoAceptable(vecino)) {
             aux.enqueue(vecino);
             vecino.setAnterior(node);
         }
@@ -93,14 +93,57 @@ public class Terreno {
         node.setVecinos(aux);
     }
 
-    public void establecerVecinos8Direeciones(Nodos node) {
+    private boolean vecinoAceptable(Nodos vecino) {
+        return ((vecino != null) && !(vecino.isRecorrido()) && !(vecino.isObstaculo()));
+    }
+
+    public void establecerVecinos8Direcciones(Nodos node) {
         Cola aux = new Cola();
         int fila = node.getFila();
         int columna = node.getColumna();
-        aux.enqueue(get(fila + 1, columna));
-        aux.enqueue(get(fila, columna + 1));
-        aux.enqueue(get(fila - 1, columna));
-        aux.enqueue(get(fila, columna - 1));
-        node.setVecinos(aux);
+        Nodos vecino;
+
+        vecino = get(fila + 1, columna - 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila + 1, columna);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila + 1, columna + 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila, columna + 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila - 1, columna + 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila - 1, columna);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila - 1, columna - 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        vecino = get(fila, columna - 1);
+        if (vecinoAceptable(vecino)) {
+            aux.enqueue(vecino);
+            vecino.setAnterior(node);
+        }
+        
+         node.setVecinos(aux);
     }
 }

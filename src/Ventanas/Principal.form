@@ -90,6 +90,7 @@
                                       </Group>
                                   </Group>
                                   <Component id="radio_obstaculo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tgl_diagonal" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -97,6 +98,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lbl_Dificultad" min="-2" max="-2" attributes="0"/>
                                   <Component id="lbl_Metodo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -114,13 +116,17 @@
                   <Component id="lbl_Metodo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="list_Metodos" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="tgl_diagonal" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="9" max="32767" attributes="0"/>
                   <Component id="radio_inicio" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="radio_fin" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="radio_obstaculo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lbl_Dificultad" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lista_dificultad" min="-2" max="-2" attributes="0"/>
@@ -217,6 +223,20 @@
         <Component class="javax.swing.JRadioButton" name="radio_obstaculo">
           <Properties>
             <Property name="text" type="java.lang.String" value="Poner Bloque"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Movimiento: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="tgl_diagonal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Sin Diagonales"/>
+            <Property name="actionCommand" type="java.lang.String" value="diagonal"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

@@ -10,7 +10,7 @@ package Modelo;
  *
  * @author Felix Diaz ®
  */
-public class Nodos {
+public class Nodos{
     private int fila;
     private int columna;
     private double costo;

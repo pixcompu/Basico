@@ -5,8 +5,11 @@
  */
 package Modelo;
 
+import Controladores.Ctrl_Principal;
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.Stack;
+import javax.swing.JButton;
 
 /**
  *
@@ -18,12 +21,17 @@ public class Algoritmos {
     private Cola frontera;
     private Terreno terreno;
     private boolean finalEncontrado;
+    private Ctrl_Principal controlador;
+    private final Color marcaBusqueda = Color.pink.brighter();
+    private boolean diagonalConsiderada;
 
-    public Algoritmos(Terreno terreno) {
+    public Algoritmos(Terreno terreno, Ctrl_Principal controlador, boolean conDiagonal) {
         this.terreno = terreno;
         this.visitados = new LinkedList();
         this.frontera = new Cola();
         this.finalEncontrado = false;
+        this.controlador = controlador;
+        this.diagonalConsiderada = conDiagonal;
     }
 
     private void imprimirMatriz(Nodos[][] mat) {
@@ -43,31 +51,48 @@ public class Algoritmos {
         Nodos actual = null;
         Nodos vecinoActual = null;
         frontera.enqueue(terreno.getInicio());
-        while (!frontera.estaVacia() && !this.finalEncontrado) {
+
+        while (!frontera.estaVacia()) {
             actual = ((Nodos) frontera.dequeue());
             actual.setRecorrido(true);
-            terreno.establecerVecinos4Direeciones(actual);
-            for (int i = 0; i < actual.getVecinos().dimensionCola() && !this.finalEncontrado; i++) {
+            
+            if(this.diagonalConsiderada){
+                terreno.establecerVecinos8Direcciones(actual);
+            }else{
+                terreno.establecerVecinos4Direcciones(actual);
+            }
+            
+            for (int i = 0; i < actual.getVecinos().dimensionCola(); i++) {
                 vecinoActual = (Nodos) actual.getVecinos().get(i);
                 if (vecinoActual.equals(terreno.getFin())) {
-                    this.finalEncontrado = true;
+                    
+                    Stack res = new Stack();
+                    Nodos reco = vecinoActual;
+                    while (reco != null) {
+                        res.push(reco);
+                        reco = reco.getAnterior();
+                    }
+                    return res;
+                    
                 } else {
-                    frontera.enqueue(actual.getVecinos().get(i));
+                    actualizaTablero(vecinoActual);
+                    frontera.enqueue(vecinoActual);
                 }
             }
         }
-        Stack res = new Stack();
-        Nodos reco = vecinoActual;
-        while (reco != null) {
-            res.push(reco);
-            reco = reco.getAnterior();
-        }
-        System.out.println(res.size());
-        return res;
+        return null;
     }
 
     public int[][] classic() {
         return null;
+    }
+
+    private void actualizaTablero(Nodos actual) {
+        int fila = actual.getFila();
+        int columna = actual.getColumna();
+        double costoTotal = actual.getCosto();
+        controlador.actualizar(fila, columna, costoTotal, marcaBusqueda, false);
+
     }
 
 }

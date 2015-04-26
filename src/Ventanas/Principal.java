@@ -41,6 +41,8 @@ public class Principal extends javax.swing.JFrame {
         btn_limpiar = new javax.swing.JButton();
         lbl_Dificultad = new javax.swing.JLabel();
         radio_obstaculo = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        tgl_diagonal = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +78,11 @@ public class Principal extends javax.swing.JFrame {
 
         radio_obstaculo.setText("Poner Bloque");
 
+        jLabel1.setText("Movimiento: ");
+
+        tgl_diagonal.setText("Sin Diagonales");
+        tgl_diagonal.setActionCommand("diagonal");
+
         javax.swing.GroupLayout pnl_ControlsLayout = new javax.swing.GroupLayout(pnl_Controls);
         pnl_Controls.setLayout(pnl_ControlsLayout);
         pnl_ControlsLayout.setHorizontalGroup(
@@ -98,12 +105,14 @@ public class Principal extends javax.swing.JFrame {
                                     .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(btn_realizar)
                                         .addComponent(btn_limpiar)))
-                                .addComponent(radio_obstaculo)))
+                                .addComponent(radio_obstaculo)
+                                .addComponent(tgl_diagonal)))
                         .addGroup(pnl_ControlsLayout.createSequentialGroup()
                             .addGap(23, 23, 23)
                             .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lbl_Dificultad)
-                                .addComponent(lbl_Metodo)))))
+                                .addComponent(lbl_Metodo)
+                                .addComponent(jLabel1)))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         pnl_ControlsLayout.setVerticalGroup(
@@ -115,13 +124,17 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lbl_Metodo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tgl_diagonal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(radio_inicio)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radio_fin)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radio_obstaculo)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(lbl_Dificultad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lista_dificultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,6 +202,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_limpiar;
     public javax.swing.JButton btn_realizar;
     public javax.swing.ButtonGroup grp_Radios;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbl_Dificultad;
     private javax.swing.JLabel lbl_Metodo;
     private javax.swing.JLabel lbl_Titulo;
@@ -199,5 +213,6 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JRadioButton radio_fin;
     public javax.swing.JRadioButton radio_inicio;
     public javax.swing.JRadioButton radio_obstaculo;
+    public javax.swing.JToggleButton tgl_diagonal;
     // End of variables declaration//GEN-END:variables
 }
