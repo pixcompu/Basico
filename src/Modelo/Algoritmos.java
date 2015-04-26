@@ -9,7 +9,6 @@ import Controladores.Ctrl_Principal;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.Stack;
-import javax.swing.JButton;
 
 /**
  *
@@ -17,8 +16,8 @@ import javax.swing.JButton;
  */
 public class Algoritmos {
 
-    private LinkedList visitados;
     private Cola frontera;
+    private ColaPrioridad fronteraPrioridad;
     private Terreno terreno;
     private boolean finalEncontrado;
     private Ctrl_Principal controlador;
@@ -27,8 +26,8 @@ public class Algoritmos {
 
     public Algoritmos(Terreno terreno, Ctrl_Principal controlador, boolean conDiagonal) {
         this.terreno = terreno;
-        this.visitados = new LinkedList();
         this.frontera = new Cola();
+        this.fronteraPrioridad = new ColaPrioridad();
         this.finalEncontrado = false;
         this.controlador = controlador;
         this.diagonalConsiderada = conDiagonal;
@@ -42,18 +41,22 @@ public class Algoritmos {
             System.out.println("");
         }
     }
+    
+    public double distanciaHeuristica(Nodos a, Nodos b){
+        return (Math.abs(b.getFila() - a.getFila()) + Math.abs(b.getColumna() - a.getColumna()));
+    }
 
-    public int[][] FC() {
+    public Stack Depth_FS() {
         return null;
     }
 
-    public Stack DFS() {
+    public Stack Breath_FS() {
         Nodos actual = null;
         Nodos vecinoActual = null;
-        frontera.enqueue(terreno.getInicio());
+        fronteraPrioridad.enqueue(terreno.getInicio());
 
-        while (!frontera.estaVacia()) {
-            actual = ((Nodos) frontera.dequeue());
+        while (!fronteraPrioridad.estaVacia()) {
+            actual = ((Nodos) fronteraPrioridad.dequeue());
             actual.setRecorrido(true);
             
             if(this.diagonalConsiderada){
@@ -61,7 +64,7 @@ public class Algoritmos {
             }else{
                 terreno.establecerVecinos4Direcciones(actual);
             }
-            
+            actual.getVecinos().imprimirCola();
             for (int i = 0; i < actual.getVecinos().dimensionCola(); i++) {
                 vecinoActual = (Nodos) actual.getVecinos().get(i);
                 if (vecinoActual.equals(terreno.getFin())) {
@@ -76,14 +79,14 @@ public class Algoritmos {
                     
                 } else {
                     actualizaTablero(vecinoActual);
-                    frontera.enqueue(vecinoActual);
+                    fronteraPrioridad.enqueue(vecinoActual);
                 }
             }
         }
         return null;
     }
 
-    public int[][] classic() {
+    public Stack StarA() {
         return null;
     }
 

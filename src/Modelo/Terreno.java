@@ -64,7 +64,7 @@ public class Terreno {
     }
 
     public void establecerVecinos4Direcciones(Nodos node) {
-        Cola aux = new Cola();
+        ColaPrioridad aux = new ColaPrioridad();
         int fila = node.getFila();
         int columna = node.getColumna();
         Nodos vecino;
@@ -98,7 +98,7 @@ public class Terreno {
     }
 
     public void establecerVecinos8Direcciones(Nodos node) {
-        Cola aux = new Cola();
+        ColaPrioridad aux = new ColaPrioridad();
         int fila = node.getFila();
         int columna = node.getColumna();
         Nodos vecino;

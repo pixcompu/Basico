@@ -64,7 +64,6 @@ public class Ctrl_Principal implements ActionListener {
      * recien creado
      */
     private void iniciaTablero() {
-
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
                 tablero[i][j] = new JButton();
@@ -163,6 +162,10 @@ public class Ctrl_Principal implements ActionListener {
                 this.terreno.getGrafo()[i][j].setVecinos(null);
                 this.terreno.getGrafo()[i][j].setRecorrido(false);
                 this.tablero[i][j].setText("    ");
+                if (!this.terreno.getGrafo()[i][j].equals(terreno.getInicio())
+                        && !this.terreno.getGrafo()[i][j].equals(terreno.getFin())) {
+                    marcarObstaculo(this.tablero[i][j].getActionCommand(), this.terreno.getGrafo()[i][j].getTipoCamino());
+                }
             }
         }
     }
@@ -177,6 +180,7 @@ public class Ctrl_Principal implements ActionListener {
                 this.tablero[i][j].setBackground(Color.WHITE);
                 this.tablero[i][j].setText("    ");
                 this.terreno.getGrafo()[i][j].setCosto(1.0);
+                this.terreno.getGrafo()[i][j].setTipoCamino(3);
                 this.terreno.getGrafo()[i][j].setObstaculo(false);
             }
         }
@@ -208,23 +212,24 @@ public class Ctrl_Principal implements ActionListener {
         resetValores();
         this.algoritmoIniciado = true;
         Algoritmos algoritmos = new Algoritmos(this.terreno, this, this.opcionDiagonal);
+        Stack res;
         switch (indice) {
             case 0:
-                Stack res = algoritmos.DFS();
-                if (res != null) {
-                    mostrarCamino(res);
-                } else {
-                    mostrarMensaje("No se encontraron caminos");
-                }
+                res = algoritmos.Depth_FS();
                 break;
             case 1:
-
+                res = algoritmos.Breath_FS();
                 break;
             case 2:
-
+                res = algoritmos.StarA();
                 break;
             default:
                 throw new AssertionError();
+        }
+        if (res != null) {
+            mostrarCamino(res);
+        } else {
+            mostrarMensaje("No se encontraron caminos");
         }
     }
 
@@ -238,11 +243,17 @@ public class Ctrl_Principal implements ActionListener {
      * @param actionCommand
      */
     private void marcarInicio(String actionCommand) {
+        if (this.terreno.getInicio() != null) {
+            int filaAnterior = this.terreno.getInicio().getFila();
+            int columnaAnterior = this.terreno.getInicio().getColumna();
+            tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            tablero[filaAnterior][columnaAnterior].setEnabled(true);
+            this.terreno.getInicio().setCosto(1.0);
+
+        }
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
         tablero[fila][columna].setBackground(Color.GREEN);
-        this.ventana.radio_inicio.setEnabled(false);
-        this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
         this.terreno.estableceInicio(fila, columna);
     }
@@ -257,13 +268,20 @@ public class Ctrl_Principal implements ActionListener {
      * @param actionCommand
      */
     private void marcarFin(String actionCommand) {
+        if (this.terreno.getFin() != null) {
+            int filaAnterior = this.terreno.getFin().getFila();
+            int columnaAnterior = this.terreno.getFin().getColumna();
+            tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            tablero[filaAnterior][columnaAnterior].setEnabled(true);
+            this.terreno.getFin().setCosto(1.0);
+        }
+
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
         tablero[fila][columna].setBackground(Color.RED);
-        this.ventana.radio_fin.setEnabled(false);
-        this.ventana.radio_obstaculo.setSelected(true);
         tablero[fila][columna].setEnabled(false);
         this.terreno.estableceFin(fila, columna);
+
     }
 
     /**
@@ -278,28 +296,32 @@ public class Ctrl_Principal implements ActionListener {
     private void marcarObstaculo(String actionCommand, int selectedIndex) {
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        tablero[fila][columna].setEnabled(false);
+        this.terreno.getGrafo()[fila][columna].setTipoCamino(selectedIndex);
         switch (selectedIndex) {
             case 0:
                 tablero[fila][columna].setBackground(Color.BLACK);
-                this.terreno.getGrafo()[fila][columna].setCosto(0.0);
+                this.terreno.getGrafo()[fila][columna].setCosto(Integer.MIN_VALUE);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(true);
                 break;
             case 1:
                 tablero[fila][columna].setBackground(Color.GRAY.darker());
                 this.terreno.getGrafo()[fila][columna].setCosto(10.0);
+                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 2:
                 tablero[fila][columna].setBackground(Color.GRAY.brighter());
                 this.terreno.getGrafo()[fila][columna].setCosto(5.0);
+                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 3:
                 tablero[fila][columna].setBackground(Color.WHITE);
                 this.terreno.getGrafo()[fila][columna].setCosto(1.0);
+                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 4:
                 tablero[fila][columna].setBackground(Color.ORANGE);
                 this.terreno.getGrafo()[fila][columna].setCosto(0.3);
+                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             default:
                 throw new AssertionError();

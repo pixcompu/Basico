@@ -41,7 +41,7 @@ public class Principal extends javax.swing.JFrame {
         btn_limpiar = new javax.swing.JButton();
         lbl_Dificultad = new javax.swing.JLabel();
         radio_obstaculo = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
+        lbl_Movimiento = new javax.swing.JLabel();
         tgl_diagonal = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,7 +57,7 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Classic A*", "Deepth Search", "Foward Checking" }));
+        list_Metodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "First Depth Search", "First Breath Search", "A*" }));
 
         lbl_Metodo.setText("Método :");
 
@@ -78,7 +78,7 @@ public class Principal extends javax.swing.JFrame {
 
         radio_obstaculo.setText("Poner Bloque");
 
-        jLabel1.setText("Movimiento: ");
+        lbl_Movimiento.setText("Movimiento: ");
 
         tgl_diagonal.setText("Sin Diagonales");
         tgl_diagonal.setActionCommand("diagonal");
@@ -112,7 +112,7 @@ public class Principal extends javax.swing.JFrame {
                             .addGroup(pnl_ControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lbl_Dificultad)
                                 .addComponent(lbl_Metodo)
-                                .addComponent(jLabel1)))))
+                                .addComponent(lbl_Movimiento)))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         pnl_ControlsLayout.setVerticalGroup(
@@ -125,7 +125,7 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(list_Metodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(lbl_Movimiento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tgl_diagonal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
@@ -202,9 +202,9 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_limpiar;
     public javax.swing.JButton btn_realizar;
     public javax.swing.ButtonGroup grp_Radios;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbl_Dificultad;
     private javax.swing.JLabel lbl_Metodo;
+    private javax.swing.JLabel lbl_Movimiento;
     private javax.swing.JLabel lbl_Titulo;
     public javax.swing.JComboBox list_Metodos;
     public javax.swing.JComboBox lista_dificultad;

@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class Cola {
 
-    private final LinkedList list;
+    protected final LinkedList list;
 
     public Cola() {
         this.list = new LinkedList();
@@ -23,6 +23,7 @@ public class Cola {
         return this.list.size();
     }
 
+    
     public void imprimirCola() {
         int dim = dimensionCola();
         for (int i = 0; i < dim; i++) {
