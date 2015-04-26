@@ -21,19 +21,8 @@ public class Algoritmos {
     private final Ctrl_Principal controlador;
     private final Color marcaBusqueda = Color.CYAN.brighter();
     private boolean diagonalConsiderada;
+    private double acumulado;
     private static final Comparator cmpCostoAcumulado = new Comparator<Nodos>() {
-        @Override
-        public int compare(Nodos o1, Nodos o2) {
-            if (o1.getCosto() > o2.getCosto()) {
-                return 1;
-            } else if (o1.getCosto() < o2.getCosto()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    };
-    private static final Comparator cmpCosto = new Comparator<Nodos>() {
         @Override
         public int compare(Nodos o1, Nodos o2) {
             if (o1.getCostoAcumulado() > o2.getCostoAcumulado()) {
@@ -45,10 +34,43 @@ public class Algoritmos {
             }
         }
     };
+    private static final Comparator cmpCostoHeuristico = new Comparator<Nodos>() {
+        @Override
+        public int compare(Nodos o1, Nodos o2) {
+            if (o1.getCostoHeuristico() > o2.getCostoHeuristico()) {
+                return 1;
+            } else if (o1.getCostoHeuristico() < o2.getCostoHeuristico()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    };
+    private static final Comparator cmpCosto = new Comparator<Nodos>() {
+        @Override
+        public int compare(Nodos o1, Nodos o2) {
+            if (o1.getCosto() > o2.getCosto()) {
+                return 1;
+            } else if (o1.getCosto() < o2.getCosto()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    };
 
     public Algoritmos(Ctrl_Principal controlador) {
         this.fronteraPrioridad = new Cola();
         this.controlador = controlador;
+        this.acumulado = 0.0;
+    }
+
+    public double getAcumulado() {
+        return acumulado;
+    }
+
+    public void setAcumulado(double acumulado) {
+        this.acumulado += acumulado;
     }
 
     public Terreno getTerreno() {
@@ -83,23 +105,23 @@ public class Algoritmos {
         while (!fronteraPrioridad.estaVacia()) {
             actual = ((Nodos) fronteraPrioridad.dequeue());
             actual.setRecorrido(true);
-
+            setAcumulado(actual.getCosto());
             fila = actual.getFila();
             columna = actual.getColumna();
             if (this.diagonalConsiderada) {
-                evaluarVecinoDFS(terreno.get(fila + 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila + 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila - 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila - 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoDFS(terreno.get(fila + 1, columna - 1), actual);
+                evaluarVecinoDFS(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoDFS(terreno.get(fila + 1, columna + 1), actual);
+                evaluarVecinoDFS(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoDFS(terreno.get(fila - 1, columna + 1), actual);
+                evaluarVecinoDFS(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoDFS(terreno.get(fila - 1, columna - 1), actual);
+                evaluarVecinoDFS(terreno.get(fila, columna - 1), actual);
             } else {
-                evaluarVecinoDFS(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoDFS(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoDFS(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoDFS(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoDFS(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoDFS(terreno.get(fila, columna - 1), actual);
             }
         }
         Stack res = new Stack();
@@ -138,19 +160,19 @@ public class Algoritmos {
             fila = actual.getFila();
             columna = actual.getColumna();
             if (this.diagonalConsiderada) {
-                evaluarVecinoBFS(terreno.get(fila + 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila + 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila - 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila - 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoBFS(terreno.get(fila + 1, columna - 1), actual);
+                evaluarVecinoBFS(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoBFS(terreno.get(fila + 1, columna + 1), actual);
+                evaluarVecinoBFS(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoBFS(terreno.get(fila - 1, columna + 1), actual);
+                evaluarVecinoBFS(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoBFS(terreno.get(fila - 1, columna - 1), actual);
+                evaluarVecinoBFS(terreno.get(fila, columna - 1), actual);
             } else {
-                evaluarVecinoBFS(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoBFS(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoBFS(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoBFS(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoBFS(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoBFS(terreno.get(fila, columna - 1), actual);
             }
         }
         return null;
@@ -174,46 +196,52 @@ public class Algoritmos {
                 }
                 return res;
             }
+
             fila = actual.getFila();
             columna = actual.getColumna();
             if (this.diagonalConsiderada) {
-                evaluarVecinoAStar(terreno.get(fila + 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila + 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila - 1, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila - 1, columna - 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoAStar(terreno.get(fila + 1, columna - 1), actual);
+                evaluarVecinoAStar(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoAStar(terreno.get(fila + 1, columna + 1), actual);
+                evaluarVecinoAStar(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoAStar(terreno.get(fila - 1, columna + 1), actual);
+                evaluarVecinoAStar(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoAStar(terreno.get(fila - 1, columna - 1), actual);
+                evaluarVecinoAStar(terreno.get(fila, columna - 1), actual);
             } else {
-                evaluarVecinoAStar(terreno.get(fila + 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila, columna + 1), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila - 1, columna), actual, cmpCostoAcumulado);
-                evaluarVecinoAStar(terreno.get(fila, columna - 1), actual, cmpCostoAcumulado);
+                evaluarVecinoAStar(terreno.get(fila + 1, columna), actual);
+                evaluarVecinoAStar(terreno.get(fila, columna + 1), actual);
+                evaluarVecinoAStar(terreno.get(fila - 1, columna), actual);
+                evaluarVecinoAStar(terreno.get(fila, columna - 1), actual);
             }
         }
         return null;
     }
 
-    private void evaluarVecinoDFS(Nodos vecino, Nodos actual, Comparator cmp) {
+    private void evaluarVecinoDFS(Nodos vecino, Nodos actual) {
         if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino, cmp);
+            fronteraPrioridad.enqueue(vecino);
             vecino.setAnterior(actual);
             actualizaTablero(vecino);
         }
     }
 
-    private void evaluarVecinoAStar(Nodos vecino, Nodos actual, Comparator cmp) {
-        if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino, cmp);
-            vecino.setAnterior(actual);
-            actualizaTablero(vecino);
+    private void evaluarVecinoAStar(Nodos vecino, Nodos actual) {
+        if (vecinoAceptableASTAR(vecino)) {
+            double nuevoCosto = actual.getCostoAcumulado() + vecino.getCosto();
+            if (!vecino.isRecorrido() || (nuevoCosto < vecino.getCostoAcumulado())) {
+                vecino.setCostoHeuristico(nuevoCosto + distanciaHeuristica(this.terreno.getFin(), vecino));
+                vecino.setCostoAcumulado(nuevoCosto);
+                fronteraPrioridad.enqueue(vecino, cmpCostoHeuristico);
+                actualizaTablero(vecino);
+                vecino.setAnterior(actual);
+            }
         }
     }
 
-    private void evaluarVecinoBFS(Nodos vecino, Nodos actual, Comparator cmp) {
+    private void evaluarVecinoBFS(Nodos vecino, Nodos actual) {
         if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino, cmp);
+            fronteraPrioridad.enqueue(vecino, cmpCosto);
             vecino.setAnterior(actual);
             actualizaTablero(vecino);
         }
@@ -223,10 +251,14 @@ public class Algoritmos {
         return ((vecino != null) && (!vecino.isRecorrido()) && !(vecino.isObstaculo()));
     }
 
+    private boolean vecinoAceptableASTAR(Nodos vecino) {
+        return ((vecino != null) && !(vecino.isObstaculo()));
+    }
+
     private void actualizaTablero(Nodos actual) {
         int fila = actual.getFila();
         int columna = actual.getColumna();
-        controlador.actualizar(fila, columna, actual.getCostoAcumulado(), marcaBusqueda, false);
+        controlador.actualizar(fila, columna, actual.getCostoAcumulado(), this.marcaBusqueda, false);
     }
 
     public void resetCola() {

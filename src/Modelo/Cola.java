@@ -37,8 +37,8 @@ public class Cola {
     }
 
     public void enqueue(Object a, Comparator cmp) {
-        this.list.addLast(a);
-        Collections.sort(list, cmp);
+        this.list.add(a);
+        Collections.sort(this.list, cmp);
     }
 
     public Object dequeue() {

@@ -21,6 +21,7 @@ public class Nodos{
     private int tipoCamino;
     private Nodos anterior;
     private double costoAcumulado;
+    private double costoHeuristico;
 
     public Nodos(int fila, int columna, double costo) {
         this.fila = fila;
@@ -31,8 +32,17 @@ public class Nodos{
         this.tipoCamino = 3;
         this.anterior = null;
         this.costoAcumulado = costo;
+        this.costoHeuristico = 0.0;
     }
 
+    public double getCostoHeuristico() {
+        return costoHeuristico;
+    }
+
+    public void setCostoHeuristico(double costoHeuristico) {
+        this.costoHeuristico = costoHeuristico;
+    }
+    
     public double getCostoAcumulado() {
         return costoAcumulado;
     }
