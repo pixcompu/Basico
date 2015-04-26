@@ -14,8 +14,8 @@ public class Terreno {
     private Nodos inicio;
     private Nodos fin;
     private Nodos[][] grafo;
-    private int ancho;
-    private int alto;
+    private final int ancho;
+    private final int alto;
 
     public Terreno(int ancho, int alto) {
         this.ancho = ancho;

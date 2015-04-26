@@ -30,10 +30,10 @@ public class Ctrl_Principal implements ActionListener {
     private final Dimension tamañoBoton = new Dimension(45, 25);
     private final Insets margen = new Insets(0, 0, 0, 0);
     private final Font fuenteBtn = new Font("Tahoma", 1, 9);
-    private Principal ventana;
-    private JPanel cuadricula;
+    private final Principal ventana;
+    private final JPanel cuadricula;
+    private final Terreno terreno;
     private final JButton[][] tablero;
-    private Terreno terreno;
     private final Color marcaCamino = Color.YELLOW;
     private boolean opcionDiagonal;
     private boolean algoritmoIniciado;
@@ -52,8 +52,8 @@ public class Ctrl_Principal implements ActionListener {
         this.ventana = ventana;
         this.cuadricula = ventana.pnl_Cuadricula;
         this.cuadricula.setLayout(new GridLayout(20, 20));
-        this.tablero = new JButton[20][20];
         this.terreno = new Terreno(20, 20);
+        this.tablero = new JButton[20][20];
         this.algoritmoIniciado = false;
         iniciar();
     }
@@ -93,18 +93,18 @@ public class Ctrl_Principal implements ActionListener {
      * recien creado
      */
     private void iniciaTablero() {
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
-                tablero[i][j] = new JButton();
-                tablero[i][j].setActionCommand("" + i + "," + j + "");
-                tablero[i][j].setToolTipText("Posicion: (" + i + "," + j + ")");
-                tablero[i][j].setBackground(Color.WHITE);
-                tablero[i][j].setFont(fuenteBtn);
-                tablero[i][j].setMargin(margen);
-                tablero[i][j].setPreferredSize(tamañoBoton);
-                tablero[i][j].addActionListener(this);
+        for (int i = 0; i < terreno.getGrafo().length; i++) {
+            for (int j = 0; j < terreno.getGrafo().length; j++) {
+                this.tablero[i][j] = new JButton("   ");
+                this.tablero[i][j].setActionCommand("" + i + "," + j + "");
+                this.tablero[i][j].setToolTipText("Posicion: (" + i + "," + j + ")");
+                this.tablero[i][j].setBackground(Color.WHITE);
+                this.tablero[i][j].setFont(fuenteBtn);
+                this.tablero[i][j].setMargin(margen);
+                this.tablero[i][j].setPreferredSize(tamañoBoton);
+                this.tablero[i][j].addActionListener(this);
                 terreno.getGrafo()[i][j] = new Nodos(i, j, 1.0);
-                cuadricula.add(tablero[i][j]);
+                cuadricula.add(this.tablero[i][j]);
             }
         }
     }
@@ -158,8 +158,8 @@ public class Ctrl_Principal implements ActionListener {
     }
 
     private void resetValores() {
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
+        for (int i = 0; i < terreno.getGrafo().length; i++) {
+            for (int j = 0; j < terreno.getGrafo().length; j++) {
                 this.terreno.getGrafo()[i][j].setAnterior(null);
                 this.terreno.getGrafo()[i][j].setRecorrido(false);
                 this.tablero[i][j].setText("    ");
@@ -175,8 +175,8 @@ public class Ctrl_Principal implements ActionListener {
      * Establece los valores iniciales de los botones
      */
     private void reset() {
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
+        for (int i = 0; i < this.terreno.getGrafo().length; i++) {
+            for (int j = 0; j < this.terreno.getGrafo().length; j++) {
                 this.tablero[i][j].setEnabled(true);
                 this.tablero[i][j].setBackground(Color.WHITE);
                 this.tablero[i][j].setText("    ");
@@ -249,15 +249,15 @@ public class Ctrl_Principal implements ActionListener {
         if (this.terreno.getInicio() != null) {
             int filaAnterior = this.terreno.getInicio().getFila();
             int columnaAnterior = this.terreno.getInicio().getColumna();
-            tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
-            tablero[filaAnterior][columnaAnterior].setEnabled(true);
+            this.tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            this.tablero[filaAnterior][columnaAnterior].setEnabled(true);
             this.terreno.getInicio().setCosto(0.0);
 
         }
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        tablero[fila][columna].setBackground(Color.GREEN);
-        tablero[fila][columna].setEnabled(false);
+        this.tablero[fila][columna].setBackground(Color.GREEN);
+        this.tablero[fila][columna].setEnabled(false);
         this.terreno.estableceInicio(fila, columna);
         this.terreno.getInicio().setCosto(0.0);
         this.terreno.getInicio().setCostoAcumulado(0.0);
@@ -276,15 +276,14 @@ public class Ctrl_Principal implements ActionListener {
         if (this.terreno.getFin() != null) {
             int filaAnterior = this.terreno.getFin().getFila();
             int columnaAnterior = this.terreno.getFin().getColumna();
-            tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
-            tablero[filaAnterior][columnaAnterior].setEnabled(true);
+            this.tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            this.tablero[filaAnterior][columnaAnterior].setEnabled(true);
             this.terreno.getFin().setCosto(1.0);
         }
-
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        tablero[fila][columna].setBackground(Color.RED);
-        tablero[fila][columna].setEnabled(false);
+        this.tablero[fila][columna].setBackground(Color.RED);
+        this.tablero[fila][columna].setEnabled(false);
         this.terreno.estableceFin(fila, columna);
         this.terreno.getFin().setCosto(0.0);
         this.terreno.getFin().setCostoAcumulado(0.0);
@@ -292,7 +291,7 @@ public class Ctrl_Principal implements ActionListener {
     }
 
     private void marcaCasillaObstaculo(int fila, int columna, Color c, double costo, double costoAcum, boolean esObstaculo) {
-        tablero[fila][columna].setBackground(c);
+        this.tablero[fila][columna].setBackground(c);
         this.terreno.getGrafo()[fila][columna].setCosto(costo);
         this.terreno.getGrafo()[fila][columna].setCostoAcumulado(costoAcum);
         this.terreno.getGrafo()[fila][columna].setObstaculo(esObstaculo);

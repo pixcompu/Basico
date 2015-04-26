@@ -16,18 +16,6 @@ import java.util.LinkedList;
 public class Cola {
 
     protected final LinkedList list;
-    private Comparator cmp = new Comparator<Nodos>() {
-        @Override
-        public int compare(Nodos o1, Nodos o2) {
-            if (o1.getCostoAcumulado() > o2.getCostoAcumulado()) {
-                return 1;
-            } else if (o1.getCostoAcumulado() < o2.getCostoAcumulado()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    };
 
     public Cola() {
         this.list = new LinkedList();
@@ -48,7 +36,7 @@ public class Cola {
         this.list.addLast(a);
     }
 
-    public void enqueueP(Object a) {
+    public void enqueue(Object a, Comparator cmp) {
         this.list.addLast(a);
         Collections.sort(list, cmp);
     }

@@ -5,11 +5,13 @@
  */
 package Modelo;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author Felix Diaz ®
  */
-public class Nodos {
+public class Nodos{
 
     private int fila;
     private int columna;
