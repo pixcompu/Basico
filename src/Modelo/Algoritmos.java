@@ -93,10 +93,6 @@ public class Algoritmos {
         return (Math.abs(a.getFila() - b.getFila()) + Math.abs(a.getColumna() - b.getColumna()));
     }
 
-    private double costoPotencial(Nodos actual, Nodos siguiente) {
-        return actual.getCosto() + siguiente.getCosto();
-    }
-
     public Stack Depth_FS() {
         Nodos actual = null;
         Nodos vecinoActual = null;
@@ -108,6 +104,7 @@ public class Algoritmos {
             setAcumulado(actual.getCosto());
             fila = actual.getFila();
             columna = actual.getColumna();
+            acumulado+=actual.getCosto();
             if (this.diagonalConsiderada) {
                 evaluarVecinoDFS(terreno.get(fila + 1, columna - 1), actual);
                 evaluarVecinoDFS(terreno.get(fila + 1, columna), actual);
@@ -220,7 +217,7 @@ public class Algoritmos {
 
     private void evaluarVecinoDFS(Nodos vecino, Nodos actual) {
         if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino);
+            fronteraPrioridad.enqueue(vecino, cmpCosto);
             vecino.setAnterior(actual);
             actualizaTablero(vecino);
         }
@@ -233,17 +230,21 @@ public class Algoritmos {
                 vecino.setCostoHeuristico(nuevoCosto + distanciaHeuristica(this.terreno.getFin(), vecino));
                 vecino.setCostoAcumulado(nuevoCosto);
                 fronteraPrioridad.enqueue(vecino, cmpCostoHeuristico);
-                actualizaTablero(vecino);
                 vecino.setAnterior(actual);
+                actualizaTablero(vecino);
             }
         }
     }
 
     private void evaluarVecinoBFS(Nodos vecino, Nodos actual) {
-        if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino, cmpCosto);
-            vecino.setAnterior(actual);
-            actualizaTablero(vecino);
+        if (vecinoAceptableASTAR(vecino)) {
+            double nuevoCosto = actual.getCostoAcumulado() + vecino.getCosto();
+            if (!vecino.isRecorrido() || (nuevoCosto < vecino.getCostoAcumulado())) {
+                fronteraPrioridad.enqueue(vecino, cmpCostoAcumulado);
+                vecino.setCostoAcumulado(nuevoCosto);
+                vecino.setAnterior(actual);
+                actualizaTablero(vecino);
+            }
         }
     }
 
