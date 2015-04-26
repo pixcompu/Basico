@@ -159,7 +159,6 @@ public class Ctrl_Principal implements ActionListener {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
                 this.terreno.getGrafo()[i][j].setAnterior(null);
-                this.terreno.getGrafo()[i][j].setVecinos(null);
                 this.terreno.getGrafo()[i][j].setRecorrido(false);
                 this.tablero[i][j].setText("    ");
                 if (!this.terreno.getGrafo()[i][j].equals(terreno.getInicio())

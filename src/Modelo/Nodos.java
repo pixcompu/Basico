@@ -17,7 +17,6 @@ public class Nodos {
     private boolean obstaculo;
     private boolean recorrido;
     private int tipoCamino;
-    private Cola vecinos;
     private Nodos anterior;
     private double costoAcumulado;
 
@@ -28,7 +27,6 @@ public class Nodos {
         this.obstaculo = false;
         this.recorrido = false;
         this.tipoCamino = 3;
-        this.vecinos = null;
         this.anterior = null;
         this.costoAcumulado = costo;
     }
@@ -87,14 +85,6 @@ public class Nodos {
 
     public void setCosto(double costo) {
         this.costo = costo;
-    }
-
-    public Cola getVecinos() {
-        return vecinos;
-    }
-
-    public void setVecinos(Cola vecinos) {
-        this.vecinos = vecinos;
     }
 
     public Nodos getAnterior() {

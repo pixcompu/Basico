@@ -28,15 +28,6 @@ public class Algoritmos {
         this.diagonalConsiderada = conDiagonal;
     }
 
-    private void imprimirMatriz(Nodos[][] mat) {
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat.length; j++) {
-                System.out.print(mat[i][j].getCosto() + " ");
-            }
-            System.out.println("");
-        }
-    }
-
     private double distanciaHeuristica(Nodos a, Nodos b) {
         return (Math.abs(a.getFila() - b.getFila()) + Math.abs(a.getColumna() - b.getColumna()));
     }
@@ -54,19 +45,11 @@ public class Algoritmos {
             actual.setRecorrido(true);
 
             if (this.diagonalConsiderada) {
-                terreno.establecerVecinos8Direcciones(actual);
+                establecerVecinos8Direcciones(actual);
             } else {
-                terreno.establecerVecinos4Direcciones(actual);
-            }
-            for (int i = 0; i < actual.getVecinos().dimensionCola(); i++) {
-                vecinoActual = (Nodos) actual.getVecinos().get(i);
-                vecinoActual.setCostoAcumulado(costoPotencial(actual, vecinoActual));
-
-                actualizaTablero(vecinoActual);
-                fronteraPrioridad.enqueueP(vecinoActual);
+                establecerVecinos4Direcciones(actual);
             }
         }
-
         Stack res = new Stack();
         Nodos reco = terreno.getFin();
         Nodos reco2 = reco;
@@ -75,9 +58,9 @@ public class Algoritmos {
             reco2 = reco;
             reco = reco.getAnterior();
         }
-        if(reco2!=terreno.getInicio()){
+        if (reco2 != terreno.getInicio()) {
             return null;
-        }else{
+        } else {
             return res;
         }
     }
@@ -101,16 +84,9 @@ public class Algoritmos {
             }
 
             if (this.diagonalConsiderada) {
-                terreno.establecerVecinos8Direcciones(actual);
+                establecerVecinos8Direcciones(actual);
             } else {
-                terreno.establecerVecinos4Direcciones(actual);
-            }
-            for (int i = 0; i < actual.getVecinos().dimensionCola(); i++) {
-                vecinoActual = (Nodos) actual.getVecinos().get(i);
-                vecinoActual.setCostoAcumulado(costoPotencial(actual, vecinoActual));
-
-                actualizaTablero(vecinoActual);
-                fronteraPrioridad.enqueueP(vecinoActual);
+                establecerVecinos4Direcciones(actual);
             }
         }
         return null;
@@ -119,8 +95,8 @@ public class Algoritmos {
     public Stack StarA() {
         Nodos actual = null;
         Nodos vecinoActual = null;
-
         fronteraPrioridad.enqueueP(terreno.getInicio());
+        
         while (!fronteraPrioridad.estaVacia()) {
             actual = ((Nodos) fronteraPrioridad.dequeue());
             actual.setRecorrido(true);
@@ -134,28 +110,54 @@ public class Algoritmos {
                 }
                 return res;
             }
-
             if (this.diagonalConsiderada) {
-                terreno.establecerVecinos8Direcciones(actual);
+                establecerVecinos8Direcciones(actual);
             } else {
-                terreno.establecerVecinos4Direcciones(actual);
-            }
-
-            for (int i = 0; i < actual.getVecinos().dimensionCola(); i++) {
-                vecinoActual = (Nodos) actual.getVecinos().get(i);
-                vecinoActual.setCostoAcumulado(costoPotencial(actual, vecinoActual) + distanciaHeuristica(terreno.getFin(), vecinoActual));
-                actualizaTablero(vecinoActual);
-                fronteraPrioridad.enqueueP(vecinoActual);
+                establecerVecinos4Direcciones(actual);
             }
         }
         return null;
+    }
+
+    private void evaluarVecino(Nodos vecino, Nodos actual) {
+        if (vecinoAceptable(vecino)) {
+            fronteraPrioridad.enqueue(vecino);
+            vecino.setAnterior(actual);
+            actualizaTablero(vecino);
+        }
+    }
+
+    private void establecerVecinos4Direcciones(Nodos node) {
+        int fila = node.getFila();
+        int columna = node.getColumna();
+        evaluarVecino(terreno.get(fila + 1, columna), node);
+        evaluarVecino(terreno.get(fila, columna + 1), node);
+        evaluarVecino(terreno.get(fila - 1, columna), node);
+        evaluarVecino(terreno.get(fila, columna - 1), node);
+    }
+
+    private boolean vecinoAceptable(Nodos vecino) {
+        return ((vecino != null) && (!vecino.isRecorrido()) && !(vecino.isObstaculo()));
+    }
+
+    private void establecerVecinos8Direcciones(Nodos node) {
+        int fila = node.getFila();
+        int columna = node.getColumna();
+
+        evaluarVecino(terreno.get(fila + 1, columna - 1), node);
+        evaluarVecino(terreno.get(fila + 1, columna), node);
+        evaluarVecino(terreno.get(fila + 1, columna + 1), node);
+        evaluarVecino(terreno.get(fila, columna + 1), node);
+        evaluarVecino(terreno.get(fila - 1, columna + 1), node);
+        evaluarVecino(terreno.get(fila - 1, columna), node);
+        evaluarVecino(terreno.get(fila - 1, columna - 1), node);
+        evaluarVecino(terreno.get(fila, columna - 1), node);
     }
 
     private void actualizaTablero(Nodos actual) {
         int fila = actual.getFila();
         int columna = actual.getColumna();
         controlador.actualizar(fila, columna, actual.getCostoAcumulado(), marcaBusqueda, false);
-
     }
 
 }
