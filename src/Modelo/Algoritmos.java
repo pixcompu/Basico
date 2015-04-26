@@ -21,13 +21,27 @@ public class Algoritmos {
     private final Color marcaBusqueda = Color.CYAN.brighter();
     private boolean diagonalConsiderada;
 
-    public Algoritmos(Terreno terreno, Ctrl_Principal controlador, boolean conDiagonal) {
-        this.terreno = terreno;
+    public Algoritmos(Ctrl_Principal controlador) {
         this.fronteraPrioridad = new Cola();
-        this.controlador = controlador;
-        this.diagonalConsiderada = conDiagonal;
+        this.controlador = controlador;   
     }
 
+    public Terreno getTerreno() {
+        return terreno;
+    }
+
+    public void setTerreno(Terreno terreno) {
+        this.terreno = terreno;
+    }
+
+    public boolean isDiagonalConsiderada() {
+        return diagonalConsiderada;
+    }
+
+    public void setDiagonalConsiderada(boolean diagonalConsiderada) {
+        this.diagonalConsiderada = diagonalConsiderada;
+    }
+    
     private double distanciaHeuristica(Nodos a, Nodos b) {
         return (Math.abs(a.getFila() - b.getFila()) + Math.abs(a.getColumna() - b.getColumna()));
     }
@@ -158,6 +172,10 @@ public class Algoritmos {
         int fila = actual.getFila();
         int columna = actual.getColumna();
         controlador.actualizar(fila, columna, actual.getCostoAcumulado(), marcaBusqueda, false);
+    }
+
+    public void resetCola() {
+        this.fronteraPrioridad.hardReset();
     }
 
 }

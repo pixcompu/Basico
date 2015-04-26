@@ -76,4 +76,8 @@ public class Cola {
     public boolean estaVacia() {
         return this.list.isEmpty();
     }
+
+    public void hardReset() {
+        this.list.clear();
+    }
 }

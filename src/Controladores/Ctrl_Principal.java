@@ -37,6 +37,7 @@ public class Ctrl_Principal implements ActionListener {
     private final Color marcaCamino = Color.YELLOW;
     private boolean opcionDiagonal;
     private boolean algoritmoIniciado;
+    Algoritmos algoritmos;
 
     /**
      * Recibe la ventana y hace las configuraciones necesarias antes de
@@ -55,6 +56,34 @@ public class Ctrl_Principal implements ActionListener {
         this.terreno = new Terreno(20, 20);
         this.algoritmoIniciado = false;
         iniciar();
+    }
+
+    /**
+     * Configuracion Inicial la primera linea para que salga la ventana en el
+     * centro la segunda le da un titulo la tercera, cuarta y quinta enlaza los
+     * botones de inicio, fin y obstaculo para que no se puedan seleccionar
+     * simultaneamente inicia el selector en inicio añade el boton de realizar y
+     * limpiar un listener, para que cuando se clicke entre al metodo
+     * actionPerformed de arriba realiza la inicializacion de cada boton la
+     * siguiente pack hace que el tamaño de la ventana se ajuste para poder ver
+     * todos los botones la siguiente lanza la ventana en pantalla
+     */
+    private void iniciar() {
+        this.ventana.setTitle("Ordinario");
+        this.ventana.grp_Radios.add(this.ventana.radio_fin);
+        this.ventana.grp_Radios.add(this.ventana.radio_inicio);
+        this.ventana.grp_Radios.add(this.ventana.radio_obstaculo);
+        this.ventana.radio_inicio.setSelected(true);
+        this.ventana.btn_realizar.addActionListener(this);
+        this.ventana.btn_limpiar.addActionListener(this);
+        this.ventana.setResizable(false);
+        this.opcionDiagonal = false;
+        this.ventana.tgl_diagonal.addActionListener(this);
+        iniciaTablero();
+        algoritmos = new Algoritmos(this);
+        this.ventana.pack();
+        this.ventana.setLocationRelativeTo(null);
+        this.ventana.setVisible(true);
     }
 
     /**
@@ -128,33 +157,6 @@ public class Ctrl_Principal implements ActionListener {
         }
     }
 
-    /**
-     * Configuracion Inicial la primera linea para que salga la ventana en el
-     * centro la segunda le da un titulo la tercera, cuarta y quinta enlaza los
-     * botones de inicio, fin y obstaculo para que no se puedan seleccionar
-     * simultaneamente inicia el selector en inicio añade el boton de realizar y
-     * limpiar un listener, para que cuando se clicke entre al metodo
-     * actionPerformed de arriba realiza la inicializacion de cada boton la
-     * siguiente pack hace que el tamaño de la ventana se ajuste para poder ver
-     * todos los botones la siguiente lanza la ventana en pantalla
-     */
-    private void iniciar() {
-        this.ventana.setTitle("Ordinario");
-        this.ventana.grp_Radios.add(this.ventana.radio_fin);
-        this.ventana.grp_Radios.add(this.ventana.radio_inicio);
-        this.ventana.grp_Radios.add(this.ventana.radio_obstaculo);
-        this.ventana.radio_inicio.setSelected(true);
-        this.ventana.btn_realizar.addActionListener(this);
-        this.ventana.btn_limpiar.addActionListener(this);
-        this.ventana.setResizable(false);
-        this.opcionDiagonal = false;
-        this.ventana.tgl_diagonal.addActionListener(this);
-        iniciaTablero();
-        this.ventana.pack();
-        this.ventana.setLocationRelativeTo(null);
-        this.ventana.setVisible(true);
-    }
-
     private void resetValores() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
@@ -210,7 +212,9 @@ public class Ctrl_Principal implements ActionListener {
     private void iniciarAlgoritmo(int indice) {
         resetValores();
         this.algoritmoIniciado = true;
-        Algoritmos algoritmos = new Algoritmos(this.terreno, this, this.opcionDiagonal);
+        this.algoritmos.setDiagonalConsiderada(this.opcionDiagonal);
+        this.algoritmos.setTerreno(this.terreno);
+        this.algoritmos.resetCola();
         Stack res;
         switch (indice) {
             case 0:
@@ -287,6 +291,13 @@ public class Ctrl_Principal implements ActionListener {
 
     }
 
+    private void marcaCasillaObstaculo(int fila, int columna, Color c, double costo, double costoAcum, boolean esObstaculo) {
+        tablero[fila][columna].setBackground(c);
+        this.terreno.getGrafo()[fila][columna].setCosto(costo);
+        this.terreno.getGrafo()[fila][columna].setCostoAcumulado(costoAcum);
+        this.terreno.getGrafo()[fila][columna].setObstaculo(esObstaculo);
+    }
+
     /**
      * Marca Obstaculo primero obtiene la informacion de actioncomand que dice
      * la posicion cambia el color al correspondiente y la matriz de enteros a
@@ -302,34 +313,19 @@ public class Ctrl_Principal implements ActionListener {
         this.terreno.getGrafo()[fila][columna].setTipoCamino(selectedIndex);
         switch (selectedIndex) {
             case 0:
-                tablero[fila][columna].setBackground(Color.BLACK);
-                this.terreno.getGrafo()[fila][columna].setCosto(Integer.MIN_VALUE);
-                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(Integer.MIN_VALUE);
-                this.terreno.getGrafo()[fila][columna].setObstaculo(true);
+                marcaCasillaObstaculo(fila, columna, Color.BLACK, Integer.MAX_VALUE, Integer.MIN_VALUE, true);
                 break;
             case 1:
-                tablero[fila][columna].setBackground(Color.GRAY.darker());
-                this.terreno.getGrafo()[fila][columna].setCosto(10.0);
-                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(10.0);
-                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+                marcaCasillaObstaculo(fila, columna, Color.GRAY.darker(), 10.0, 10.0, false);
                 break;
             case 2:
-                tablero[fila][columna].setBackground(Color.GRAY.brighter());
-                this.terreno.getGrafo()[fila][columna].setCosto(5.0);
-                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(5.0);
-                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+                marcaCasillaObstaculo(fila, columna, Color.GRAY.brighter(), 5.0, 5.0, false);
                 break;
             case 3:
-                tablero[fila][columna].setBackground(Color.WHITE);
-                this.terreno.getGrafo()[fila][columna].setCosto(1.0);
-                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(1.0);
-                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+                marcaCasillaObstaculo(fila, columna, Color.WHITE, 1.0, 1.0, false);
                 break;
             case 4:
-                tablero[fila][columna].setBackground(Color.ORANGE);
-                this.terreno.getGrafo()[fila][columna].setCosto(0.3);
-                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(0.3);
-                this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+                marcaCasillaObstaculo(fila, columna, Color.ORANGE, 0.3, 0.3, false);
                 break;
             default:
                 throw new AssertionError();

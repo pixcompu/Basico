@@ -38,7 +38,7 @@ public class Nodos {
     public void setCostoAcumulado(double costoAcumulado) {
         this.costoAcumulado = costoAcumulado;
     }
-    
+
     public int getTipoCamino() {
         return tipoCamino;
     }
@@ -99,6 +99,5 @@ public class Nodos {
     public String toString() {
         return "(" + getFila() + "," + getColumna() + ")";
     }
-
 
 }
