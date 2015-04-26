@@ -248,7 +248,7 @@ public class Ctrl_Principal implements ActionListener {
             int columnaAnterior = this.terreno.getInicio().getColumna();
             tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
             tablero[filaAnterior][columnaAnterior].setEnabled(true);
-            this.terreno.getInicio().setCosto(1.0);
+            this.terreno.getInicio().setCosto(0.0);
 
         }
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
@@ -256,6 +256,8 @@ public class Ctrl_Principal implements ActionListener {
         tablero[fila][columna].setBackground(Color.GREEN);
         tablero[fila][columna].setEnabled(false);
         this.terreno.estableceInicio(fila, columna);
+        this.terreno.getInicio().setCosto(0.0);
+        this.terreno.getInicio().setCostoAcumulado(0.0);
     }
 
     /**
@@ -281,6 +283,8 @@ public class Ctrl_Principal implements ActionListener {
         tablero[fila][columna].setBackground(Color.RED);
         tablero[fila][columna].setEnabled(false);
         this.terreno.estableceFin(fila, columna);
+        this.terreno.getFin().setCosto(0.0);
+        this.terreno.getFin().setCostoAcumulado(0.0);
 
     }
 
@@ -301,26 +305,31 @@ public class Ctrl_Principal implements ActionListener {
             case 0:
                 tablero[fila][columna].setBackground(Color.BLACK);
                 this.terreno.getGrafo()[fila][columna].setCosto(Integer.MIN_VALUE);
+                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(Integer.MIN_VALUE);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(true);
                 break;
             case 1:
                 tablero[fila][columna].setBackground(Color.GRAY.darker());
                 this.terreno.getGrafo()[fila][columna].setCosto(10.0);
+                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(10.0);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 2:
                 tablero[fila][columna].setBackground(Color.GRAY.brighter());
                 this.terreno.getGrafo()[fila][columna].setCosto(5.0);
+                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(5.0);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 3:
                 tablero[fila][columna].setBackground(Color.WHITE);
                 this.terreno.getGrafo()[fila][columna].setCosto(1.0);
+                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(1.0);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             case 4:
                 tablero[fila][columna].setBackground(Color.ORANGE);
                 this.terreno.getGrafo()[fila][columna].setCosto(0.3);
+                this.terreno.getGrafo()[fila][columna].setCostoAcumulado(0.3);
                 this.terreno.getGrafo()[fila][columna].setObstaculo(false);
                 break;
             default:

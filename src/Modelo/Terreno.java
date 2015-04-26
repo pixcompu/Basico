@@ -64,7 +64,7 @@ public class Terreno {
     }
 
     public void establecerVecinos4Direcciones(Nodos node) {
-        ColaPrioridad aux = new ColaPrioridad();
+        Cola aux = new Cola();
         int fila = node.getFila();
         int columna = node.getColumna();
         Nodos vecino;
@@ -97,8 +97,9 @@ public class Terreno {
         return ((vecino != null) && !(vecino.isRecorrido()) && !(vecino.isObstaculo()));
     }
 
+
     public void establecerVecinos8Direcciones(Nodos node) {
-        ColaPrioridad aux = new ColaPrioridad();
+        Cola aux = new Cola();
         int fila = node.getFila();
         int columna = node.getColumna();
         Nodos vecino;
@@ -143,7 +144,7 @@ public class Terreno {
             aux.enqueue(vecino);
             vecino.setAnterior(node);
         }
-        
-         node.setVecinos(aux);
+
+        node.setVecinos(aux);
     }
 }

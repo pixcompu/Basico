@@ -5,6 +5,8 @@
  */
 package Modelo;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -14,6 +16,18 @@ import java.util.LinkedList;
 public class Cola {
 
     protected final LinkedList list;
+        private Comparator cmp = new Comparator<Nodos>() {
+        @Override
+        public int compare(Nodos o1, Nodos o2) {
+            if (o1.getCostoAcumulado()> o2.getCostoAcumulado()) {
+                return 1;
+            } else if (o1.getCostoAcumulado()< o2.getCostoAcumulado()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    };
 
     public Cola() {
         this.list = new LinkedList();
@@ -27,12 +41,13 @@ public class Cola {
     public void imprimirCola() {
         int dim = dimensionCola();
         for (int i = 0; i < dim; i++) {
-            System.out.print(get(i).toString() + ((i < dim - 1) ? " -> " : "\n"));
+            System.out.print(((Nodos)get(i)).getCostoAcumulado() + ((i < dim - 1) ? " -> " : "\n"));
         }
     }
 
     public void enqueue(Object a) {
         this.list.addLast(a);
+        Collections.sort(list, cmp);
     }
 
     public Object dequeue() {
