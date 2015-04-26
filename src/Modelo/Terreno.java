@@ -94,10 +94,10 @@ public class Terreno {
     }
 
     private boolean vecinoAceptable(Nodos vecino) {
-        return ((vecino != null) && !(vecino.isRecorrido()) && !(vecino.isObstaculo()));
+        return ((vecino != null) && (!vecino.isRecorrido())&&!(vecino.isObstaculo()));
     }
-
-
+    
+        
     public void establecerVecinos8Direcciones(Nodos node) {
         Cola aux = new Cola();
         int fila = node.getFila();
