@@ -95,7 +95,6 @@ public class Algoritmos {
 
     public Stack Depth_FS() {
         Nodos actual = null;
-        Nodos vecinoActual = null;
         int fila, columna;
         fronteraPrioridad.enqueue(terreno.getInicio());
         while (!fronteraPrioridad.estaVacia()) {
@@ -138,7 +137,6 @@ public class Algoritmos {
 
     public Stack Breath_FS() {
         Nodos actual = null;
-        Nodos vecinoActual = null;
         int fila, columna;
         fronteraPrioridad.enqueue(terreno.getInicio());
         while (!fronteraPrioridad.estaVacia()) {
@@ -177,7 +175,6 @@ public class Algoritmos {
 
     public Stack StarA() {
         Nodos actual = null;
-        Nodos vecinoActual = null;
         fronteraPrioridad.enqueue(terreno.getInicio());
         int fila, columna;
         while (!fronteraPrioridad.estaVacia()) {

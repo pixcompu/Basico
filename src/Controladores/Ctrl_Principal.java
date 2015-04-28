@@ -261,6 +261,7 @@ public class Ctrl_Principal implements ActionListener {
         this.terreno.estableceInicio(fila, columna);
         this.terreno.getInicio().setCosto(0.0);
         this.terreno.getInicio().setCostoAcumulado(0.0);
+        this.terreno.getGrafo()[fila][columna].setObstaculo(false);
     }
 
     /**
@@ -287,7 +288,7 @@ public class Ctrl_Principal implements ActionListener {
         this.terreno.estableceFin(fila, columna);
         this.terreno.getFin().setCosto(0.0);
         this.terreno.getFin().setCostoAcumulado(0.0);
-
+        this.terreno.getGrafo()[fila][columna].setObstaculo(false);
     }
 
     private void marcaCasillaObstaculo(int fila, int columna, Color c, double costo, double costoAcum, boolean esObstaculo) {
