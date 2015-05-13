@@ -6,7 +6,6 @@
 package Modelo;
 
 import Controladores.Ctrl_Principal;
-import java.awt.Color;
 import java.util.Comparator;
 import java.util.Stack;
 
@@ -18,13 +17,12 @@ public class Algoritmos {
 
     private final Cola fronteraPrioridad;
     private Terreno terreno;
-    private final Ctrl_Principal controlador;
-    private final Color marcaBusqueda = Color.CYAN.brighter();
     private boolean diagonalConsiderada;
-    private double acumulado;
-    private static final Comparator cmpCostoAcumulado = new Comparator<Nodos>() {
+    private final Stack pilaDFS = new Stack();
+
+    private static final Comparator cmpCostoAcumulado = new Comparator<Nodo>() {
         @Override
-        public int compare(Nodos o1, Nodos o2) {
+        public int compare(Nodo o1, Nodo o2) {
             if (o1.getCostoAcumulado() > o2.getCostoAcumulado()) {
                 return 1;
             } else if (o1.getCostoAcumulado() < o2.getCostoAcumulado()) {
@@ -34,21 +32,23 @@ public class Algoritmos {
             }
         }
     };
-    private static final Comparator cmpCostoHeuristico = new Comparator<Nodos>() {
+
+    private static final Comparator cmpCostoHeuristico = new Comparator<Nodo>() {
         @Override
-        public int compare(Nodos o1, Nodos o2) {
-            if (o1.getCostoHeuristico() > o2.getCostoHeuristico()) {
+        public int compare(Nodo o1, Nodo o2) {
+            if (o1.getDistanciaHeuristica() > o2.getDistanciaHeuristica()) {
                 return 1;
-            } else if (o1.getCostoHeuristico() < o2.getCostoHeuristico()) {
+            } else if (o1.getDistanciaHeuristica() < o2.getDistanciaHeuristica()) {
                 return -1;
             } else {
                 return 0;
             }
         }
     };
-    private static final Comparator cmpCosto = new Comparator<Nodos>() {
+
+    private static final Comparator cmpCosto = new Comparator<Nodo>() {
         @Override
-        public int compare(Nodos o1, Nodos o2) {
+        public int compare(Nodo o1, Nodo o2) {
             if (o1.getCosto() > o2.getCosto()) {
                 return 1;
             } else if (o1.getCosto() < o2.getCosto()) {
@@ -59,18 +59,8 @@ public class Algoritmos {
         }
     };
 
-    public Algoritmos(Ctrl_Principal controlador) {
+    public Algoritmos() {
         this.fronteraPrioridad = new Cola();
-        this.controlador = controlador;
-        this.acumulado = 0.0;
-    }
-
-    public double getAcumulado() {
-        return acumulado;
-    }
-
-    public void setAcumulado(double acumulado) {
-        this.acumulado += acumulado;
     }
 
     public Terreno getTerreno() {
@@ -89,21 +79,40 @@ public class Algoritmos {
         this.diagonalConsiderada = diagonalConsiderada;
     }
 
-    private double distanciaHeuristica(Nodos a, Nodos b) {
-        return (Math.abs(a.getFila() - b.getFila()) + Math.abs(a.getColumna() - b.getColumna()));
+    private int distanciaHeuristica(Nodo a, Nodo b) {
+        int dist;
+        int dx = a.getColumna() - b.getColumna();
+        int dy = a.getFila() - b.getFila();
+        if (this.diagonalConsiderada) {
+            //Distancia Euclideana si hay diagonales
+            dist = (int) ((double) 1000 * Math.sqrt(dx * dx + dy * dy));
+        } else {
+            //Distancia Manhatan si no hay diagonales
+            dist = Math.abs(dx) + Math.abs(dy);
+        }
+        return dist;
     }
 
-    public Stack Depth_FS() {
-        Nodos actual = null;
+    public Stack Depth_FS(Nodo origen, Nodo objetivo) {
+        Nodo actual = null;
         int fila, columna;
-        fronteraPrioridad.enqueue(terreno.getInicio());
-        while (!fronteraPrioridad.estaVacia()) {
-            actual = ((Nodos) fronteraPrioridad.dequeue());
+        pilaDFS.push(origen);
+        while (!pilaDFS.isEmpty()) {
+            actual = ((Nodo) pilaDFS.pop());
+
+            if (actual.equals(objetivo)) {
+                Stack res = new Stack();
+                Nodo reco = actual;
+                while (reco != null) {
+                    res.push(reco);
+                    reco = reco.getAnterior();
+                }
+                return res;
+            }
+
             actual.setRecorrido(true);
-            setAcumulado(actual.getCosto());
             fila = actual.getFila();
             columna = actual.getColumna();
-            acumulado+=actual.getCosto();
             if (this.diagonalConsiderada) {
                 evaluarVecinoDFS(terreno.get(fila + 1, columna - 1), actual);
                 evaluarVecinoDFS(terreno.get(fila + 1, columna), actual);
@@ -121,8 +130,8 @@ public class Algoritmos {
             }
         }
         Stack res = new Stack();
-        Nodos reco = terreno.getFin();
-        Nodos reco2 = reco;
+        Nodo reco = terreno.getFin();
+        Nodo reco2 = reco;
         while (reco != null) {
             res.push(reco);
             reco2 = reco;
@@ -135,23 +144,25 @@ public class Algoritmos {
         }
     }
 
-    public Stack Breath_FS() {
-        Nodos actual = null;
+    public Stack Breath_FS(Nodo origen, Nodo objetivo) {
+        Nodo actual = null;
         int fila, columna;
-        fronteraPrioridad.enqueue(terreno.getInicio());
+        fronteraPrioridad.enqueue(origen);
         while (!fronteraPrioridad.estaVacia()) {
-            actual = ((Nodos) fronteraPrioridad.dequeue());
-            actual.setRecorrido(true);
+            actual = ((Nodo) fronteraPrioridad.dequeue());
 
-            if (actual.equals(terreno.getFin())) {
+            if (actual.equals(objetivo)) {
                 Stack res = new Stack();
-                Nodos reco = actual;
+                Nodo reco = actual;
                 while (reco != null) {
                     res.push(reco);
                     reco = reco.getAnterior();
                 }
                 return res;
             }
+
+            actual.setRecorrido(true);
+
             fila = actual.getFila();
             columna = actual.getColumna();
             if (this.diagonalConsiderada) {
@@ -173,23 +184,25 @@ public class Algoritmos {
         return null;
     }
 
-    public Stack StarA() {
-        Nodos actual = null;
-        fronteraPrioridad.enqueue(terreno.getInicio());
+    public Stack StarA(Nodo origen, Nodo objetivo) {
+        Nodo actual = null;
+        origen.setDistanciaHeuristica(distanciaHeuristica(origen, objetivo));
+        fronteraPrioridad.enqueue(origen);
         int fila, columna;
         while (!fronteraPrioridad.estaVacia()) {
-            actual = ((Nodos) fronteraPrioridad.dequeue());
-            actual.setRecorrido(true);
+            actual = ((Nodo) fronteraPrioridad.dequeue());
 
-            if (actual.equals(terreno.getFin())) {
+            if (actual.equals(objetivo)) {
                 Stack res = new Stack();
-                Nodos reco = actual;
+                Nodo reco = actual;
                 while (reco != null) {
                     res.push(reco);
                     reco = reco.getAnterior();
                 }
                 return res;
             }
+
+            actual.setRecorrido(true);
 
             fila = actual.getFila();
             columna = actual.getColumna();
@@ -212,51 +225,61 @@ public class Algoritmos {
         return null;
     }
 
-    private void evaluarVecinoDFS(Nodos vecino, Nodos actual) {
+    private boolean evaluarVecinoDFS(Nodo vecino, Nodo actual) {
         if (vecinoAceptable(vecino)) {
-            fronteraPrioridad.enqueue(vecino, cmpCosto);
-            vecino.setAnterior(actual);
-            actualizaTablero(vecino);
+             double nuevoCosto = actual.getCostoAcumulado() + vecino.getCosto();
+            if (!pilaDFS.contains(vecino) || (nuevoCosto <= vecino.getCostoAcumulado())) {
+                vecino.setCostoAcumulado(nuevoCosto);
+                vecino.setAnterior(actual);
+                if (pilaDFS.contains(vecino)) {
+                    pilaDFS.remove(vecino);
+                }
+                pilaDFS.push(vecino);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
-    private void evaluarVecinoAStar(Nodos vecino, Nodos actual) {
-        if (vecinoAceptableASTAR(vecino)) {
+    private boolean evaluarVecinoAStar(Nodo vecino, Nodo actual) {
+        if (vecinoAceptable(vecino)) {
             double nuevoCosto = actual.getCostoAcumulado() + vecino.getCosto();
-            if (!vecino.isRecorrido() || (nuevoCosto < vecino.getCostoAcumulado())) {
-                vecino.setCostoHeuristico(nuevoCosto + distanciaHeuristica(this.terreno.getFin(), vecino));
+            if (!fronteraPrioridad.contains(vecino) || (nuevoCosto <= vecino.getCostoAcumulado())) {
                 vecino.setCostoAcumulado(nuevoCosto);
+                vecino.setDistanciaHeuristica(vecino.getCostoAcumulado() + distanciaHeuristica(vecino, terreno.getFin()));
+                vecino.setAnterior(actual);
+                if (fronteraPrioridad.contains(vecino)) {
+                    fronteraPrioridad.eliminar(vecino);
+                }
                 fronteraPrioridad.enqueue(vecino, cmpCostoHeuristico);
-                vecino.setAnterior(actual);
-                actualizaTablero(vecino);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
-    private void evaluarVecinoBFS(Nodos vecino, Nodos actual) {
-        if (vecinoAceptableASTAR(vecino)) {
+    private boolean evaluarVecinoBFS(Nodo vecino, Nodo actual) {
+        if (vecinoAceptable(vecino)) {
             double nuevoCosto = actual.getCostoAcumulado() + vecino.getCosto();
-            if (!vecino.isRecorrido() || (nuevoCosto < vecino.getCostoAcumulado())) {
-                fronteraPrioridad.enqueue(vecino, cmpCostoAcumulado);
+            if (!fronteraPrioridad.contains(vecino) || (nuevoCosto <= vecino.getCostoAcumulado())) {
                 vecino.setCostoAcumulado(nuevoCosto);
                 vecino.setAnterior(actual);
-                actualizaTablero(vecino);
+                if (fronteraPrioridad.contains(vecino)) {
+                    fronteraPrioridad.eliminar(vecino);
+                }
+                fronteraPrioridad.enqueue(vecino, cmpCostoAcumulado);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
-    private boolean vecinoAceptable(Nodos vecino) {
-        return ((vecino != null) && (!vecino.isRecorrido()) && !(vecino.isObstaculo()));
-    }
-
-    private boolean vecinoAceptableASTAR(Nodos vecino) {
-        return ((vecino != null) && !(vecino.isObstaculo()));
-    }
-
-    private void actualizaTablero(Nodos actual) {
-        int fila = actual.getFila();
-        int columna = actual.getColumna();
-        controlador.actualizar(fila, columna, actual.getCostoAcumulado(), this.marcaBusqueda, false);
+    private boolean vecinoAceptable(Nodo vecino) {
+        return ((vecino != null) && (!vecino.isRecorrido()) && (vecino.getTipoNodo() != Ctrl_Principal.IMPOSIBLE)
+                && !vecino.equals(terreno.getInicio()));
     }
 
     public void resetCola() {

@@ -28,10 +28,14 @@ public class Cola {
     public void imprimirCola() {
         int dim = dimensionCola();
         for (int i = 0; i < dim; i++) {
-            System.out.print(((Nodos) get(i)).getCostoAcumulado() + ((i < dim - 1) ? " -> " : "\n"));
+            System.out.print(((Nodo) get(i)).getCosto() + ((i < dim - 1) ? " -> " : "\n"));
         }
     }
 
+    public boolean contains(Object nodo){
+        return this.list.contains(nodo);
+    }
+    
     public void enqueue(Object a) {
         this.list.addLast(a);
     }

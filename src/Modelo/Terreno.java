@@ -11,19 +11,19 @@ package Modelo;
  */
 public class Terreno {
 
-    private Nodos inicio;
-    private Nodos fin;
-    private Nodos[][] grafo;
+    private Nodo inicio;
+    private Nodo fin;
+    private Nodo[][] grafo;
     private final int ancho;
     private final int alto;
 
     public Terreno(int ancho, int alto) {
         this.ancho = ancho;
         this.alto = alto;
-        this.grafo = new Nodos[ancho][alto];
+        this.grafo = new Nodo[ancho][alto];
     }
 
-    public Nodos get(int fila, int columna) {
+    public Nodo get(int fila, int columna) {
         if (fila < alto && fila >= 0 && columna < ancho && columna >= 0) {
             return grafo[fila][columna];
         } else {
@@ -31,27 +31,27 @@ public class Terreno {
         }
     }
 
-    public Nodos getInicio() {
+    public Nodo getInicio() {
         return inicio;
     }
 
-    public void setInicio(Nodos inicio) {
+    public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
 
-    public Nodos getFin() {
+    public Nodo getFin() {
         return fin;
     }
 
-    public void setFin(Nodos fin) {
+    public void setFin(Nodo fin) {
         this.fin = fin;
     }
 
-    public Nodos[][] getGrafo() {
+    public Nodo[][] getGrafo() {
         return grafo;
     }
 
-    public void setGrafo(Nodos[][] grafo) {
+    public void setGrafo(Nodo[][] grafo) {
         this.grafo = grafo;
     }
 
@@ -62,5 +62,5 @@ public class Terreno {
     public void estableceFin(int fila, int columna) {
         this.fin = get(fila, columna);
     }
-
+    
 }

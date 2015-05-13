@@ -5,42 +5,44 @@
  */
 package Modelo;
 
-import javax.swing.JButton;
-
 /**
  *
  * @author Felix Diaz ®
  */
-public class Nodos{
+public class Nodo{
 
     private int fila;
     private int columna;
     private double costo;
-    private boolean obstaculo;
-    private boolean recorrido;
-    private int tipoCamino;
-    private Nodos anterior;
     private double costoAcumulado;
-    private double costoHeuristico;
+    private double distanciaHeuristica;
+    private boolean recorrido;
+    private Nodo anterior;
+    private int tipoNodo;
 
-    public Nodos(int fila, int columna, double costo) {
+    public Nodo(int fila, int columna, double costo) {
         this.fila = fila;
         this.columna = columna;
         this.costo = costo;
-        this.obstaculo = false;
         this.recorrido = false;
-        this.tipoCamino = 3;
         this.anterior = null;
-        this.costoAcumulado = costo;
-        this.costoHeuristico = 0.0;
+        this.costoAcumulado = 0.0;
+        this.distanciaHeuristica = 0;
     }
 
-    public double getCostoHeuristico() {
-        return costoHeuristico;
+    public void resetNodo(){
+        this.anterior = null;
+        this.costoAcumulado = 0.0;
+        this.distanciaHeuristica = 0.0;
+        this.recorrido = false;
+    }
+    
+    public double getDistanciaHeuristica() {
+        return distanciaHeuristica;
     }
 
-    public void setCostoHeuristico(double costoHeuristico) {
-        this.costoHeuristico = costoHeuristico;
+    public void setDistanciaHeuristica(double distanciaHeuristica) {
+        this.distanciaHeuristica = distanciaHeuristica;
     }
     
     public double getCostoAcumulado() {
@@ -50,29 +52,21 @@ public class Nodos{
     public void setCostoAcumulado(double costoAcumulado) {
         this.costoAcumulado = costoAcumulado;
     }
-
-    public int getTipoCamino() {
-        return tipoCamino;
+    
+    public int getTipoNodo() {
+        return tipoNodo;
     }
 
-    public void setTipoCamino(int tipoCamino) {
-        this.tipoCamino = tipoCamino;
+    public void setTipoNodo(int tipoNodo) {
+        this.tipoNodo = tipoNodo;
     }
-
+    
     public boolean isRecorrido() {
         return recorrido;
     }
 
     public void setRecorrido(boolean recorrido) {
         this.recorrido = recorrido;
-    }
-
-    public boolean isObstaculo() {
-        return obstaculo;
-    }
-
-    public void setObstaculo(boolean obstaculo) {
-        this.obstaculo = obstaculo;
     }
 
     public int getFila() {
@@ -99,11 +93,11 @@ public class Nodos{
         this.costo = costo;
     }
 
-    public Nodos getAnterior() {
+    public Nodo getAnterior() {
         return anterior;
     }
 
-    public void setAnterior(Nodos anterior) {
+    public void setAnterior(Nodo anterior) {
         this.anterior = anterior;
     }
 

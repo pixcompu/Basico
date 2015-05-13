@@ -6,7 +6,7 @@
 package Controladores;
 
 import Modelo.Algoritmos;
-import Modelo.Nodos;
+import Modelo.Nodo;
 import Modelo.Terreno;
 import Ventanas.Principal;
 import java.awt.Color;
@@ -34,10 +34,39 @@ public class Ctrl_Principal implements ActionListener {
     private final JPanel cuadricula;
     private final Terreno terreno;
     private final JButton[][] tablero;
-    private final Color marcaCamino = Color.YELLOW;
     private boolean opcionDiagonal;
     private boolean algoritmoIniciado;
-    Algoritmos algoritmos;
+    private Algoritmos algoritmos;
+    public static final int INICIO = 0;
+    public static final int FACIL = 1;
+    public static final int NORMAL = 2;
+    public static final int DIFICIL = 3;
+    public static final int EXTREMO = 4;
+    public static final int IMPOSIBLE = 5;
+    public static final int FIN = 6;
+    private final Color COLOR_INICIO = Color.GREEN;
+    private final Color COLOR_FIN = Color.RED;
+    private final Color COLOR_FACIL = Color.ORANGE;
+    private final Color COLOR_NORMAL = Color.WHITE;
+    private final Color COLOR_DIFICIL = Color.GRAY.brighter();
+    private final Color COLOR_EXTREMO = Color.GRAY.darker();
+    private final Color COLOR_IMPOSIBLE = Color.BLACK;
+    private final Color COLOR_RECORRIDO = Color.CYAN.brighter();
+    private final Color COLOR_CAMINO = Color.YELLOW;
+
+    public void pintaBusqueda(Nodo[][] tableroNodo) {
+        Nodo actual;
+        int dim = tableroNodo.length;
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                actual = tableroNodo[i][j];
+                if (actual.isRecorrido() && !actual.equals(this.terreno.getInicio()) && !actual.equals(this.terreno.getFin())) {
+                    this.tablero[i][j].setText(String.valueOf(actual.getCostoAcumulado()));
+                    this.tablero[i][j].setBackground(COLOR_RECORRIDO);
+                }
+            }
+        }
+    }
 
     /**
      * Recibe la ventana y hace las configuraciones necesarias antes de
@@ -80,7 +109,7 @@ public class Ctrl_Principal implements ActionListener {
         this.opcionDiagonal = false;
         this.ventana.tgl_diagonal.addActionListener(this);
         iniciaTablero();
-        algoritmos = new Algoritmos(this);
+        algoritmos = new Algoritmos();
         this.ventana.pack();
         this.ventana.setLocationRelativeTo(null);
         this.ventana.setVisible(true);
@@ -98,12 +127,13 @@ public class Ctrl_Principal implements ActionListener {
                 this.tablero[i][j] = new JButton("   ");
                 this.tablero[i][j].setActionCommand("" + i + "," + j + "");
                 this.tablero[i][j].setToolTipText("Posicion: (" + i + "," + j + ")");
-                this.tablero[i][j].setBackground(Color.WHITE);
+                this.tablero[i][j].setBackground(COLOR_NORMAL);
                 this.tablero[i][j].setFont(fuenteBtn);
                 this.tablero[i][j].setMargin(margen);
                 this.tablero[i][j].setPreferredSize(tamañoBoton);
                 this.tablero[i][j].addActionListener(this);
-                terreno.getGrafo()[i][j] = new Nodos(i, j, 1.0);
+                terreno.getGrafo()[i][j] = new Nodo(i, j, 1.0);
+                terreno.getGrafo()[i][j].setTipoNodo(NORMAL);
                 cuadricula.add(this.tablero[i][j]);
             }
         }
@@ -132,12 +162,13 @@ public class Ctrl_Principal implements ActionListener {
                 }
                 break;
             case "Reset":
-                reset();
+                reset(false);
                 break;
             case "diagonal":
                 this.opcionDiagonal = this.ventana.tgl_diagonal.isSelected();
                 this.ventana.tgl_diagonal.setText((this.opcionDiagonal ? "Con " : "Sin ") + "Diagonales");
                 if (this.algoritmoIniciado) {
+                    reset(true);
                     iniciarAlgoritmo(this.ventana.list_Metodos.getSelectedIndex());
                 }
                 break;
@@ -152,46 +183,59 @@ public class Ctrl_Principal implements ActionListener {
                     }
                 }
                 if (this.algoritmoIniciado) {
+                    reset(true);
                     iniciarAlgoritmo(this.ventana.list_Metodos.getSelectedIndex());
                 }
         }
     }
 
-    private void resetValores() {
-        for (int i = 0; i < terreno.getGrafo().length; i++) {
-            for (int j = 0; j < terreno.getGrafo().length; j++) {
-                this.terreno.getGrafo()[i][j].setAnterior(null);
-                this.terreno.getGrafo()[i][j].setRecorrido(false);
-                this.tablero[i][j].setText("    ");
-                if (!this.terreno.getGrafo()[i][j].equals(terreno.getInicio())
-                        && !this.terreno.getGrafo()[i][j].equals(terreno.getFin())) {
-                    marcarObstaculo(this.tablero[i][j].getActionCommand(), this.terreno.getGrafo()[i][j].getTipoCamino());
-                }
-            }
+    private Color getColor(int tipoNodo) {
+        switch (tipoNodo) {
+            case NORMAL:
+                return COLOR_NORMAL;
+            case DIFICIL:
+                return COLOR_DIFICIL;
+            case EXTREMO:
+                return COLOR_EXTREMO;
+            case IMPOSIBLE:
+                return COLOR_IMPOSIBLE;
+            case FACIL:
+                return COLOR_FACIL;
+            case INICIO:
+                return COLOR_INICIO;
+            case FIN:
+                return COLOR_FIN;
+            default:
+                throw new AssertionError();
         }
     }
 
     /**
      * Establece los valores iniciales de los botones
      */
-    private void reset() {
-        for (int i = 0; i < this.terreno.getGrafo().length; i++) {
-            for (int j = 0; j < this.terreno.getGrafo().length; j++) {
-                this.tablero[i][j].setEnabled(true);
-                this.tablero[i][j].setBackground(Color.WHITE);
+    private void reset(boolean enEjecucion) {
+        Nodo[][] grafo = this.terreno.getGrafo();
+        int dim = grafo.length;
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                grafo[i][j].resetNodo();
+                if (!enEjecucion) {
+                    this.tablero[i][j].setEnabled(true);
+                    this.tablero[i][j].setBackground(COLOR_NORMAL);
+                    grafo[i][j].setCosto(1.0);
+                    grafo[i][j].setTipoNodo(NORMAL);
+                } else {
+                    this.tablero[i][j].setBackground(getColor(grafo[i][j].getTipoNodo()));
+                }
                 this.tablero[i][j].setText("    ");
-                this.terreno.getGrafo()[i][j].setCosto(1.0);
-                this.terreno.getGrafo()[i][j].setTipoCamino(3);
-                this.terreno.getGrafo()[i][j].setObstaculo(false);
             }
         }
-        this.ventana.radio_inicio.setSelected(true);
-        this.ventana.radio_inicio.setEnabled(true);
-        this.ventana.radio_fin.setEnabled(true);
-        this.terreno.setInicio(null);
-        this.terreno.setFin(null);
-        this.algoritmoIniciado = false;
-        this.ventana.pack();
+        if (!enEjecucion) {
+            this.terreno.setInicio(null);
+            this.terreno.setFin(null);
+            this.algoritmoIniciado = false;
+        }
+
     }
 
     /**
@@ -210,7 +254,6 @@ public class Ctrl_Principal implements ActionListener {
      * @param indice
      */
     private void iniciarAlgoritmo(int indice) {
-        resetValores();
         this.algoritmoIniciado = true;
         this.algoritmos.setDiagonalConsiderada(this.opcionDiagonal);
         this.algoritmos.setTerreno(this.terreno);
@@ -218,17 +261,18 @@ public class Ctrl_Principal implements ActionListener {
         Stack res;
         switch (indice) {
             case 0:
-                res = algoritmos.Depth_FS();
+                res = algoritmos.Depth_FS(terreno.getInicio(), terreno.getFin());
                 break;
             case 1:
-                res = algoritmos.Breath_FS();
+                res = algoritmos.Breath_FS(terreno.getInicio(), terreno.getFin());
                 break;
             case 2:
-                res = algoritmos.StarA();
+                res = algoritmos.StarA(terreno.getInicio(), terreno.getFin());
                 break;
             default:
                 throw new AssertionError();
         }
+        pintaBusqueda(this.terreno.getGrafo());
         if (res != null) {
             mostrarCamino(res);
         } else {
@@ -249,19 +293,18 @@ public class Ctrl_Principal implements ActionListener {
         if (this.terreno.getInicio() != null) {
             int filaAnterior = this.terreno.getInicio().getFila();
             int columnaAnterior = this.terreno.getInicio().getColumna();
-            this.tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            this.tablero[filaAnterior][columnaAnterior].setBackground(COLOR_NORMAL);
             this.tablero[filaAnterior][columnaAnterior].setEnabled(true);
-            this.terreno.getInicio().setCosto(0.0);
-
+            this.terreno.getInicio().setCosto(1.0);
+            this.terreno.getInicio().setTipoNodo(NORMAL);
         }
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        this.tablero[fila][columna].setBackground(Color.GREEN);
+        this.tablero[fila][columna].setBackground(COLOR_INICIO);
         this.tablero[fila][columna].setEnabled(false);
         this.terreno.estableceInicio(fila, columna);
-        this.terreno.getInicio().setCosto(0.0);
-        this.terreno.getInicio().setCostoAcumulado(0.0);
-        this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+        this.terreno.getInicio().setCosto(Integer.MIN_VALUE);
+        this.terreno.getInicio().setTipoNodo(INICIO);
     }
 
     /**
@@ -277,25 +320,23 @@ public class Ctrl_Principal implements ActionListener {
         if (this.terreno.getFin() != null) {
             int filaAnterior = this.terreno.getFin().getFila();
             int columnaAnterior = this.terreno.getFin().getColumna();
-            this.tablero[filaAnterior][columnaAnterior].setBackground(Color.WHITE);
+            this.tablero[filaAnterior][columnaAnterior].setBackground(COLOR_NORMAL);
             this.tablero[filaAnterior][columnaAnterior].setEnabled(true);
             this.terreno.getFin().setCosto(1.0);
+            this.terreno.getFin().setTipoNodo(NORMAL);
         }
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        this.tablero[fila][columna].setBackground(Color.RED);
+        this.tablero[fila][columna].setBackground(COLOR_FIN);
         this.tablero[fila][columna].setEnabled(false);
         this.terreno.estableceFin(fila, columna);
-        this.terreno.getFin().setCosto(0.0);
-        this.terreno.getFin().setCostoAcumulado(0.0);
-        this.terreno.getGrafo()[fila][columna].setObstaculo(false);
+        this.terreno.getFin().setCosto(Integer.MIN_VALUE);
+        this.terreno.getFin().setTipoNodo(FIN);
     }
 
-    private void marcaCasillaObstaculo(int fila, int columna, Color c, double costo, double costoAcum, boolean esObstaculo) {
+    private void marcaCasillaObstaculo(int fila, int columna, Color c, double costo) {
         this.tablero[fila][columna].setBackground(c);
         this.terreno.getGrafo()[fila][columna].setCosto(costo);
-        this.terreno.getGrafo()[fila][columna].setCostoAcumulado(costoAcum);
-        this.terreno.getGrafo()[fila][columna].setObstaculo(esObstaculo);
     }
 
     /**
@@ -310,46 +351,44 @@ public class Ctrl_Principal implements ActionListener {
     private void marcarObstaculo(String actionCommand, int selectedIndex) {
         int fila = Integer.parseInt(actionCommand.split(",")[0]);
         int columna = Integer.parseInt(actionCommand.split(",")[1]);
-        this.terreno.getGrafo()[fila][columna].setTipoCamino(selectedIndex);
         switch (selectedIndex) {
             case 0:
-                marcaCasillaObstaculo(fila, columna, Color.BLACK, Integer.MAX_VALUE, Integer.MIN_VALUE, true);
+                this.terreno.getGrafo()[fila][columna].setTipoNodo(IMPOSIBLE);
+                marcaCasillaObstaculo(fila, columna, COLOR_IMPOSIBLE, Integer.MAX_VALUE);
                 break;
             case 1:
-                marcaCasillaObstaculo(fila, columna, Color.GRAY.darker(), 10.0, 10.0, false);
+                this.terreno.getGrafo()[fila][columna].setTipoNodo(EXTREMO);
+                marcaCasillaObstaculo(fila, columna, COLOR_EXTREMO, 10.0);
                 break;
             case 2:
-                marcaCasillaObstaculo(fila, columna, Color.GRAY.brighter(), 5.0, 5.0, false);
+                this.terreno.getGrafo()[fila][columna].setTipoNodo(DIFICIL);
+                marcaCasillaObstaculo(fila, columna, COLOR_DIFICIL, 5.0);
                 break;
             case 3:
-                marcaCasillaObstaculo(fila, columna, Color.WHITE, 1.0, 1.0, false);
+                this.terreno.getGrafo()[fila][columna].setTipoNodo(NORMAL);
+                marcaCasillaObstaculo(fila, columna, COLOR_NORMAL, 1.0);
                 break;
             case 4:
-                marcaCasillaObstaculo(fila, columna, Color.ORANGE, 0.3, 0.3, false);
+                this.terreno.getGrafo()[fila][columna].setTipoNodo(FACIL);
+                marcaCasillaObstaculo(fila, columna, COLOR_FACIL, 0.3);
                 break;
             default:
                 throw new AssertionError();
         }
     }
 
-    public void actualizar(int fila, int columna, double costoTotal, Color marca, boolean marcandoCamino) {
-        if (this.terreno.getGrafo()[fila][columna].getCosto() == 1.0 || marcandoCamino) {
-            this.tablero[fila][columna].setBackground(marca);
-        }
-        this.tablero[fila][columna].setText("" + costoTotal);
-    }
-
     private void mostrarCamino(Stack res) {
-        Nodos reco;
+        Nodo reco;
         int fila, columna;
         double costo = 0;
         while (!res.isEmpty()) {
-            reco = ((Nodos) res.pop());
+            reco = ((Nodo) res.pop());
             if (!reco.equals(terreno.getInicio()) && !reco.equals(terreno.getFin())) {
                 fila = reco.getFila();
                 columna = reco.getColumna();
                 costo += reco.getCosto();
-                actualizar(fila, columna, costo, marcaCamino, true);
+                tablero[fila][columna].setBackground(COLOR_CAMINO);
+                tablero[fila][columna].setText(String.valueOf(costo));
             }
         }
     }
